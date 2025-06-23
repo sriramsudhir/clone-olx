@@ -4,16 +4,21 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, SlidersHorizontal } from 'lucide-react';
 import ListingGrid from '@/components/listings/ListingGrid';
+import { listings } from '@/lib/data';
 
 export default function ListingsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
 
+  const filteredListings = (category && category !== 'all')
+    ? listings.filter(l => l.category.toLowerCase().replace(/ /g, '-') === category)
+    : listings;
+
   return (
     <div className="p-4 md:px-6 space-y-4">
       <header className="flex items-center justify-between">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+        <Button variant="ghost" size="icon" onClick={() => router.back()} className="mr-2 rounded-full">
           <ArrowLeft className="w-6 h-6" />
         </Button>
         <h1 className="text-lg font-bold font-headline capitalize">
@@ -24,7 +29,7 @@ export default function ListingsPage() {
           Filter
         </Button>
       </header>
-      <ListingGrid />
+      <ListingGrid listings={filteredListings} />
     </div>
   );
 }
