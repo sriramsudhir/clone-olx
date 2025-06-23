@@ -1,5 +1,5 @@
 "use client"
-import { getListingById } from '@/lib/data';
+import { getListingById, listings } from '@/lib/data';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,12 +10,19 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import ListingGrid from '@/components/listings/ListingGrid';
 
 export default function ListingDetailPage() {
   const router = useRouter();
   const params = useParams();
   const listing = getListingById(params.id as string);
   const [selectedImage, setSelectedImage] = useState(0);
+
+  const suggestedListings = listing
+    ? listings
+        .filter((l) => l.category === listing.category && l.id !== listing.id)
+        .slice(0, 4)
+    : [];
 
   if (!listing) {
     return (
@@ -168,6 +175,13 @@ export default function ListingDetailPage() {
             </Card>
         </div>
       </div>
+      
+      {suggestedListings.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold font-headline mb-4">You might also like</h2>
+          <ListingGrid listings={suggestedListings} />
+        </div>
+      )}
     </div>
   );
 }
