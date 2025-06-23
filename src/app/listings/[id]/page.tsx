@@ -144,7 +144,7 @@ export default function ListingDetailPage() {
                         {listing.seller.showPhoneNumber && listing.seller.phoneNumber && (
                             <Button size="lg" variant="outline" className="flex-1" asChild>
                                 <a href={`tel:${listing.seller.phoneNumber}`}>
-                                    <Phone className="mr-2 h-5 w-5"/> Call
+                                    <Phone className="mr-2 h-5 w-5"/> Call Now
                                 </a>
                             </Button>
                         )}

@@ -16,11 +16,6 @@ const navLinks = [
 export default function MobileNav() {
   const pathname = usePathname();
 
-  // Hide nav on listing detail page on mobile for a more immersive view
-  if (pathname.startsWith('/listings/')) {
-    return null;
-  }
-
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t h-16 flex items-center justify-around z-50">
       {navLinks.map((link) => {
