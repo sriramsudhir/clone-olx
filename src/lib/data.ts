@@ -25,8 +25,8 @@ import {
 
 
 export const users: User[] = [
-  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100' },
-  { id: 'user-2', name: 'Budi Santoso', avatarUrl: 'https://placehold.co/100x100' },
+  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100', phoneNumber: '081234567890', showPhoneNumber: false },
+  { id: 'user-2', name: 'Budi Santoso', avatarUrl: 'https://placehold.co/100x100', phoneNumber: '089876543210', showPhoneNumber: true },
   { id: 'user-3', name: 'Charlie', avatarUrl: 'https://placehold.co/100x100' },
 ];
 

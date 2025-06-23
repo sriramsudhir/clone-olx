@@ -3,7 +3,7 @@ import { getListingById } from '@/lib/data';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Heart, Share2, ArrowLeft, Info, Star, MessageSquare, MapPin } from 'lucide-react';
+import { Heart, Share2, ArrowLeft, Info, Star, MessageSquare, MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
@@ -137,9 +137,18 @@ export default function ListingDetailPage() {
                             <Link href="#">View Profile</Link>
                         </Button>
                     </div>
-                    <Button size="lg" className="w-full mt-4">
-                        <MessageSquare className="mr-2 h-5 w-5"/> Chat Now
-                    </Button>
+                     <div className="flex gap-2 mt-4">
+                        <Button size="lg" className="flex-1">
+                            <MessageSquare className="mr-2 h-5 w-5"/> Chat
+                        </Button>
+                        {listing.seller.showPhoneNumber && listing.seller.phoneNumber && (
+                            <Button size="lg" variant="outline" className="flex-1" asChild>
+                                <a href={`tel:${listing.seller.phoneNumber}`}>
+                                    <Phone className="mr-2 h-5 w-5"/> Call
+                                </a>
+                            </Button>
+                        )}
+                    </div>
                 </CardContent>
             </Card>
 

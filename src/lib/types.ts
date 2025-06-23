@@ -4,6 +4,8 @@ export type User = {
   id: string;
   name: string;
   avatarUrl: string;
+  phoneNumber?: string;
+  showPhoneNumber?: boolean;
 };
 
 export type Listing = {

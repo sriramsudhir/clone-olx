@@ -1,9 +1,10 @@
 "use client";
 
+import * as React from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Bell, LogOut, Moon, Shield, User } from "lucide-react";
+import { Bell, LogOut, Moon, Shield, User, Phone } from "lucide-react";
 import Link from 'next/link';
 import {
   Dialog,
@@ -19,6 +20,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function ProfileSettings() {
+  const [showPhone, setShowPhone] = React.useState(false); // In a real app, this would come from user data
+
   return (
     <div className="max-w-md mx-auto space-y-4">
         <div className="p-4 bg-secondary/50 rounded-lg">
@@ -69,6 +72,13 @@ export default function ProfileSettings() {
                         </div>
                     </div>
                 </Link>
+                 <div className="flex items-center justify-between p-3 bg-background rounded-lg">
+                    <div className="flex items-center gap-4">
+                        <Phone className="w-5 h-5 text-primary"/>
+                        <span className="font-medium">Show phone number</span>
+                    </div>
+                    <Switch id="phone-switch" checked={showPhone} onCheckedChange={setShowPhone} />
+                </div>
             </div>
         </div>
 
