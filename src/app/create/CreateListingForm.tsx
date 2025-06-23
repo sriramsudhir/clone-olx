@@ -34,7 +34,7 @@ const listingFormSchema = z.object({
   category: z.string().min(1, "Please select a category."),
   subCategory: z.string().optional(),
   description: z.string().min(20, "Description must be at least 20 characters."),
-  price: z.coerce.number().min(1, "Price must be at least Rp 1."),
+  price: z.coerce.number().min(1, "Price must be at least ₹1."),
   location: z.string().min(2, "Location is required."),
   images: z.any(),
 });
@@ -272,8 +272,8 @@ export default function CreateListingForm() {
                 <FormLabelWithIcon icon={CircleDollarSign}>Price</FormLabelWithIcon>
                 <FormControl>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">Rp</span>
-                    <Input type="number" placeholder="100000" className="pl-9 font-semibold" {...field} />
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">₹</span>
+                    <Input type="number" placeholder="100000" className="pl-8 font-semibold" {...field} />
                   </div>
                 </FormControl>
                 <FormMessage />

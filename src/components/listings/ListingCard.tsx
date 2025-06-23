@@ -10,7 +10,12 @@ import { useSavedListings } from "@/hooks/use-saved-listings";
 import * as React from "react";
 
 const formatPrice = (price: number) => {
-    return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`;
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
 };
 
 export default function ListingCard({ listing }: { listing: Listing }) {

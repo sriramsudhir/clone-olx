@@ -41,7 +41,12 @@ export default function ListingDetailPage() {
   }
 
   const formatPrice = (price: number) => {
-    return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`;
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
   };
 
   return (

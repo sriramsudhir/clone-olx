@@ -14,7 +14,12 @@ import { useRouter } from 'next/navigation';
 const CURRENT_USER_ID = 'user-1';
 
 const formatPrice = (price: number) => {
-    return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`;
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
 };
 
 export default function MessageView({ conversation }: { conversation: Conversation }) {

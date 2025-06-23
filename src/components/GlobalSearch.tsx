@@ -13,7 +13,12 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 const formatPrice = (price: number) => {
-    return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`;
+    return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }).format(price);
 };
 
 export default function GlobalSearch({ className }: { className?: string }) {
