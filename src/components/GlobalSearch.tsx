@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
 import { listings } from '@/lib/data';
@@ -42,10 +42,6 @@ export default function GlobalSearch({ className }: { className?: string }) {
         setResults([]);
         setIsPopoverOpen(false);
     };
-    
-    const handleClear = () => {
-        setQuery('');
-    }
 
     return (
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
@@ -60,15 +56,6 @@ export default function GlobalSearch({ className }: { className?: string }) {
                             onChange={(e) => setQuery(e.target.value)}
                             className="pl-10 w-full rounded-full bg-secondary border-none focus-visible:ring-primary"
                         />
-                        {query && (
-                            <button
-                                onClick={handleClear}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                                aria-label="Clear search"
-                            >
-                                <X className="h-5 w-5"/>
-                            </button>
-                        )}
                     </div>
                 </PopoverAnchor>
             </div>
