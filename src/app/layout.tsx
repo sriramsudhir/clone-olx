@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import Header from '@/components/layout/Header';
 import MobileNav from '@/components/layout/MobileNav';
 import { Toaster } from "@/components/ui/toaster";
 
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#63B5FF",
+  themeColor: "#4F46E5",
 };
 
 export default function RootLayout({
@@ -44,8 +43,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-20 md:pb-6">
+          <main className="flex-grow pb-20 md:pb-0">
             {children}
           </main>
           <MobileNav />

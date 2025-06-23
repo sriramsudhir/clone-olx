@@ -14,6 +14,7 @@ export type Listing = {
   images: string[];
   seller: User;
   createdAt: string; // ISO string
+  isHighlighted?: boolean;
 };
 
 export type Message = {

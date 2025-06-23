@@ -2,75 +2,48 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import type { Listing } from "@/lib/types";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
 
+const formatPrice = (price: number) => {
+    return `Rp ${new Intl.NumberFormat('de-DE').format(price)}`;
+};
 
 export default function ListingCard({ listing }: { listing: Listing }) {
-  const { toast } = useToast();
-  const [isSaved, setIsSaved] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("savedListings");
-    if (saved) {
-      const savedIds = JSON.parse(saved);
-      setIsSaved(savedIds.includes(listing.id));
-    }
-  }, [listing.id]);
-
-  const toggleSave = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const saved = localStorage.getItem("savedListings");
-    let savedIds = saved ? JSON.parse(saved) : [];
-    if (savedIds.includes(listing.id)) {
-      savedIds = savedIds.filter((id: string) => id !== listing.id);
-      setIsSaved(false);
-      toast({ title: "Removed from saved items." });
-    } else {
-      savedIds.push(listing.id);
-      setIsSaved(true);
-      toast({ title: "Item saved!" });
-    }
-    localStorage.setItem("savedListings", JSON.stringify(savedIds));
-  };
-
   return (
-    <Link href={`/listings/${listing.id}`} className="group">
-      <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-lg">
+    <Link href={`/listings/${listing.id}`} className="group block h-full">
+      <Card className={cn(
+          "overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl shadow-md rounded-xl relative",
+          listing.isHighlighted && "shadow-orange-400/50 shadow-lg ring-2 ring-orange-400"
+      )}>
+        {listing.isHighlighted && (
+             <div className="absolute top-2 left-0 bg-orange-400 text-white text-xs font-bold px-3 py-1 rounded-r-lg z-10">
+                Highlighted
+             </div>
+        )}
         <div className="relative">
           <Image
             src={listing.images[0]}
             alt={listing.title}
             width={400}
             height={300}
-            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-            data-ai-hint="product image"
+            className="w-full aspect-square sm:aspect-[4/3] object-cover"
+            data-ai-hint="car"
           />
-          <Button
-            size="icon"
-            variant="secondary"
-            className="absolute top-2 right-2 rounded-full h-8 w-8 bg-card/70 hover:bg-card"
-            onClick={toggleSave}
-          >
-            <Heart className={cn("h-4 w-4", isSaved ? "fill-red-500 text-red-500" : "text-foreground")} />
-          </Button>
         </div>
-        <CardContent className="p-4 flex-grow flex flex-col justify-between">
+        <CardContent className="p-3 flex-grow flex flex-col justify-between bg-card">
           <div>
-            <h3 className="font-headline font-semibold text-lg truncate">{listing.title}</h3>
-            <div className="flex items-center text-sm text-muted-foreground mt-1">
-              <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
-              <span>{listing.location}</span>
+            <h3 className="font-semibold text-md text-foreground/90 truncate">{listing.title}</h3>
+            <p className="font-bold text-lg text-foreground mt-1">
+              {formatPrice(listing.price)}
+            </p>
+            <div className="flex items-center text-xs text-muted-foreground mt-2">
+              <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+              <span className="truncate">{listing.location}</span>
             </div>
           </div>
-          <p className="text-xl font-bold text-primary mt-2">
-            ${listing.price.toLocaleString()}
-          </p>
         </CardContent>
       </Card>
     </Link>
