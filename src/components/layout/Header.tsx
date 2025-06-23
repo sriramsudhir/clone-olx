@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PlusCircle, MessageSquare, Heart, User, LogOut, Settings } from "lucide-react";
+import { PlusCircle, MessageSquare, Heart, User, LogOut, Settings, MapPin, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -24,10 +24,23 @@ export default function Header() {
     <header className="bg-card shadow-sm sticky top-0 z-40 hidden md:block">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-6">
             <Link href="/" className="text-2xl font-bold font-headline text-primary">
               TradeZone
             </Link>
+            
+            <div className="border-l pl-6">
+                <Link href="/location" className="flex items-center gap-2 text-sm group">
+                    <MapPin className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                    <div>
+                        <p className="text-xs text-muted-foreground">Location</p>
+                        <div className="flex items-center">
+                            <span className="font-semibold">Banten, Tangerang</span>
+                            <ChevronDown className="w-4 h-4 ml-1 text-muted-foreground" />
+                        </div>
+                    </div>
+                </Link>
+            </div>
           </div>
 
           <div className="flex-1 flex justify-center px-4 lg:px-12">
