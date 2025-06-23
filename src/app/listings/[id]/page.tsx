@@ -11,12 +11,7 @@ import ListingGrid from '@/components/listings/ListingGrid';
 import { notFound } from 'next/navigation';
 import ImageGallery from './ImageGallery';
 import BackButton from '@/components/layout/BackButton';
-import dynamic from 'next/dynamic';
-
-const Map = dynamic(() => import('@/components/Map'), { 
-    ssr: false,
-    loading: () => <div className="h-full w-full bg-muted animate-pulse rounded-md" />
-});
+import ListingMap from './ListingMap';
 
 type ListingDetailPageProps = {
   params: { id: string };
@@ -136,7 +131,7 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
                         <span>{listing.location}</span>
                     </div>
                     <div className="aspect-video w-full rounded-md overflow-hidden bg-muted">
-                        <Map position={mapPosition} popupText={listing.location} />
+                        <ListingMap position={mapPosition} popupText={listing.location} />
                     </div>
                 </CardContent>
             </Card>
