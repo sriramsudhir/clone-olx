@@ -11,6 +11,12 @@ import ListingGrid from '@/components/listings/ListingGrid';
 import { notFound } from 'next/navigation';
 import ImageGallery from './ImageGallery';
 import BackButton from '@/components/layout/BackButton';
+import dynamic from 'next/dynamic';
+
+const Map = dynamic(() => import('@/components/Map'), { 
+    ssr: false,
+    loading: () => <div className="h-full w-full bg-muted animate-pulse rounded-md" />
+});
 
 type ListingDetailPageProps = {
   params: { id: string };
@@ -39,6 +45,9 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
     }
     return formatter.format(price);
   };
+  
+  // Dummy coordinates for now. In a real app, you'd get this from a geocoding service.
+  const mapPosition: [number, number] = [-6.2088, 106.8456]; 
 
   return (
     <div>
@@ -127,7 +136,7 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
                         <span>{listing.location}</span>
                     </div>
                     <div className="aspect-video w-full rounded-md overflow-hidden bg-muted">
-                        <Image src="https://placehold.co/400x200" alt="Map placeholder" width={400} height={200} className="w-full h-full object-cover" data-ai-hint="map street" />
+                        <Map position={mapPosition} popupText={listing.location} />
                     </div>
                 </CardContent>
             </Card>
