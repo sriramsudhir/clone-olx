@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Toaster } from "@/components/ui/toaster";
 import { Poppins, Inter } from 'next/font/google';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -51,17 +52,24 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body className={`${poppins.variable} ${inter.variable} font-body antialiased bg-secondary/50`}>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow">
-            <div className="container mx-auto px-4 py-6">
-              {children}
-            </div>
-          </main>
-          <Footer />
-          <MobileNav />
-        </div>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">
+              <div className="container mx-auto px-4 py-6">
+                {children}
+              </div>
+            </main>
+            <Footer />
+            <MobileNav />
+          </div>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

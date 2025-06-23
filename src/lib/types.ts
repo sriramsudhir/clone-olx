@@ -21,6 +21,7 @@ export type Listing = {
   tags?: string[];
   year?: number;
   rating?: number;
+  condition: 'new' | 'used';
 };
 
 export type Message = {

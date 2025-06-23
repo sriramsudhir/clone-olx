@@ -10,23 +10,67 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/co
 import Image from 'next/image';
 import SubCategoryNav from '@/components/listings/SubCategoryNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useMemo } from 'react';
 
 export default function ListingsPage() {
   const searchParams = useSearchParams();
+
+  // Filter params
   const categorySlug = searchParams.get('category') || 'all';
   const subCategorySlug = searchParams.get('subCategory') || 'all';
+  const sort = searchParams.get('sort') || 'newest';
+  const minPrice = searchParams.get('minPrice');
+  const maxPrice = searchParams.get('maxPrice');
+  const conditions = searchParams.getAll('condition');
+  const locationQuery = searchParams.get('location')?.toLowerCase();
+
+  const filteredListings = useMemo(() => {
+    let results = [...listings];
+
+    // Category and SubCategory filtering
+    results = results.filter(l => {
+      const categoryMatch = categorySlug === 'all' || l.category.toLowerCase().replace(/ /g, '-') === categorySlug;
+      const subCategoryMatch = subCategorySlug === 'all' || (l.subCategory && l.subCategory.toLowerCase().replace(/ /g, '-') === subCategorySlug);
+      return categoryMatch && subCategoryMatch;
+    });
+
+    // Price filtering
+    if (minPrice) {
+      results = results.filter(l => l.price >= Number(minPrice));
+    }
+    if (maxPrice) {
+      results = results.filter(l => l.price <= Number(maxPrice));
+    }
+    
+    // Condition filtering
+    if (conditions.length > 0) {
+        results = results.filter(l => conditions.includes(l.condition));
+    }
+
+    // Location filtering
+    if (locationQuery) {
+        results = results.filter(l => l.location.toLowerCase().includes(locationQuery));
+    }
+
+    // Sorting
+    switch (sort) {
+      case 'price-asc':
+        results.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        results.sort((a, b) => b.price - a.price);
+        break;
+      case 'newest':
+      default:
+        results.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+    }
+
+    return results;
+  }, [categorySlug, subCategorySlug, sort, minPrice, maxPrice, conditions, locationQuery]);
 
   const currentCategory = categories.find(c => c.slug === categorySlug);
   const subCategories = currentCategory?.subCategories || [];
-
-  const filteredListings = listings.filter(l => {
-    const categoryMatch = categorySlug === 'all' || l.category.toLowerCase().replace(/ /g, '-') === categorySlug;
-    
-    // Check if listing has a subcategory before trying to match
-    const subCategoryMatch = subCategorySlug === 'all' || (l.subCategory && l.subCategory.toLowerCase().replace(/ /g, '-') === subCategorySlug);
-    
-    return categoryMatch && subCategoryMatch;
-  });
 
   const pageTitle = currentCategory ? currentCategory.name : 'All Listings';
   const activeSubCategory = subCategories.find(sc => sc.slug === subCategorySlug);
@@ -63,7 +107,7 @@ export default function ListingsPage() {
           </div>
         </header>
 
-      {subCategories.length > 0 && (
+      {subCategories.length > 0 && categorySlug !== 'all' && (
         <Card>
           <CardHeader>
             <CardTitle className="text-xl font-headline">Sub-categories in {pageTitle}</CardTitle>

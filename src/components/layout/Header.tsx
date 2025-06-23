@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { users } from "@/lib/data";
+import { ThemeToggle } from "../ThemeToggle";
 
 const navLinks = [
   { href: "/saved", label: "Saved", icon: Heart },
@@ -40,7 +41,7 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
             <nav className="flex items-center space-x-1">
               {navLinks.map(({ href, label, icon: Icon }) => (
                 <Button
@@ -67,6 +68,8 @@ export default function Header() {
               </Link>
             </Button>
             
+            <ThemeToggle />
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -93,9 +96,11 @@ export default function Header() {
                         <span>Profile</span>
                      </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile?tab=settings">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

@@ -1,11 +1,12 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Heart, Package, Settings, LogOut, Shield } from 'lucide-react';
+import { Package } from 'lucide-react';
 import { users, listings } from "@/lib/data";
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ListingGrid from "@/components/listings/ListingGrid";
+import ProfileSettings from "./ProfileSettings";
 
 export default function ProfilePage() {
   const currentUser = users[0];
@@ -55,32 +56,7 @@ export default function ProfilePage() {
                  <ListingGrid listings={savedListings} />
             </TabsContent>
             <TabsContent value="settings">
-                <div className="max-w-md mx-auto space-y-2">
-                    <Link href="#">
-                        <div className="flex items-center justify-between p-4 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors cursor-pointer">
-                            <div className="flex items-center gap-4">
-                                <Shield className="w-5 h-5 text-primary"/>
-                                <span className="font-semibold">Verification</span>
-                            </div>
-                        </div>
-                    </Link>
-                    <Link href="#">
-                        <div className="flex items-center justify-between p-4 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors cursor-pointer">
-                            <div className="flex items-center gap-4">
-                                <Settings className="w-5 h-5 text-primary"/>
-                                <span className="font-semibold">General Settings</span>
-                            </div>
-                        </div>
-                    </Link>
-                     <Link href="#">
-                        <div className="flex items-center justify-between p-4 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors cursor-pointer text-red-500">
-                            <div className="flex items-center gap-4">
-                                <LogOut className="w-5 h-5"/>
-                                <span className="font-semibold">Log Out</span>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
+                <ProfileSettings />
             </TabsContent>
           </Tabs>
         </CardContent>

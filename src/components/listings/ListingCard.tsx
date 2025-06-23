@@ -1,15 +1,28 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
 import { Star, Heart } from "lucide-react";
 import type { Listing } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { useSavedListings } from "@/hooks/use-saved-listings";
+import * as React from "react";
 
 const formatPrice = (price: number) => {
     return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`;
 };
 
 export default function ListingCard({ listing }: { listing: Listing }) {
+  const { isSaved, toggleSave, isLoading } = useSavedListings();
+  const isCurrentlySaved = isSaved(listing.id);
+
+  const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent navigating to the listing page
+    e.stopPropagation(); // Stop event bubbling
+    toggleSave(listing.id, listing.title);
+  };
+
   return (
     <div className="group relative">
       <Link href={`/listings/${listing.id}`} className="block">
@@ -42,9 +55,15 @@ export default function ListingCard({ listing }: { listing: Listing }) {
           </div>
         </div>
       </Link>
-      <Button size="icon" variant="secondary" className="absolute top-2 right-2 h-8 w-8 rounded-full z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-white/70 hover:bg-white">
-        <Heart className="w-4 h-4 text-primary" />
-        <span className="sr-only">Save</span>
+      <Button 
+        size="icon" 
+        variant="secondary" 
+        className="absolute top-2 right-2 h-8 w-8 rounded-full z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-white/70 hover:bg-white disabled:opacity-50"
+        onClick={handleSaveClick}
+        aria-label={isCurrentlySaved ? "Unsave item" : "Save item"}
+        disabled={isLoading}
+      >
+        <Heart className={cn("w-4 h-4 text-primary", isCurrentlySaved && "fill-primary")} />
       </Button>
     </div>
   );
