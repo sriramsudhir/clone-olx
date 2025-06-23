@@ -6,14 +6,7 @@ import ListingGrid from '@/components/listings/ListingGrid';
 import { listings, users, categories as categoryData, banners } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
-
-function CategoryButton({ name, slug }: { name: string; slug: string }) {
-  return (
-    <Button asChild variant={slug === 'all' ? 'default' : 'secondary'} className="rounded-full flex-shrink-0">
-      <Link href={`/listings?category=${slug}`}>{name}</Link>
-    </Button>
-  );
-}
+import CategoryGrid from '@/components/CategoryGrid';
 
 export default function HomePage() {
   const currentUser = users[0];
@@ -58,18 +51,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-bold font-headline px-4 md:px-0">Categories</h2>
-        <div className="flex gap-2 overflow-x-auto px-4 md:px-0 pb-2">
-          {categoryData.map((cat) => (
-            <CategoryButton key={cat.slug} {...cat} />
-          ))}
+      <section className="px-4 md:px-0">
+        <div className="p-4 rounded-2xl bg-gradient-to-b from-blue-100 to-transparent dark:from-blue-900/30 dark:to-transparent">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-bold font-headline">Telusuri Kategori</h2>
+            <Link href="/listings?category=all" className="text-sm font-medium text-primary hover:underline">
+              Lihat Semua
+            </Link>
+          </div>
+          <CategoryGrid categories={categoryData} />
         </div>
       </section>
 
       <section className="px-4 md:px-0 space-y-3">
         <div className="flex justify-between items-center">
-            <h2 className="text-lg font-bold font-headline">Fresh Recommendations</h2>
+            <h2 className="text-lg font-bold font-headline">Rekomendasi Terbaru</h2>
             <Link href="/listings" className="text-sm font-medium text-primary hover:underline">
                 See All
             </Link>

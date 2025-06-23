@@ -1,4 +1,16 @@
 import type { User, Listing, Conversation, Category, Banner } from './types';
+import {
+  MapPin,
+  Car,
+  Building2,
+  Bike,
+  Briefcase,
+  MonitorSmartphone,
+  Guitar,
+  Sofa,
+  Shirt,
+} from 'lucide-react';
+
 
 export const users: User[] = [
   { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100' },
@@ -120,12 +132,15 @@ export const getListingById = (id: string) => listings.find(l => l.id === id);
 export const getConversationById = (id:string) => conversations.find(c => c.id === id);
 
 export const categories: Category[] = [
-    { name: 'All', slug: 'all' },
-    { name: 'Properti', slug: 'properti' },
-    { name: 'Mobil', slug: 'mobil' },
-    { name: 'Motor', slug: 'motor' },
-    { name: 'Jasa', slug: 'jasa' },
-    { name: 'Gadget', slug: 'gadget' },
+    { name: 'Iklan Terdekat', slug: 'nearby', icon: MapPin },
+    { name: 'Mobil', slug: 'mobil', icon: Car },
+    { name: 'Properti', slug: 'properti', icon: Building2 },
+    { name: 'Motor', slug: 'motor', icon: Bike },
+    { name: 'Jasa & Loker', slug: 'jasa-loker', icon: Briefcase },
+    { name: 'Gadget', slug: 'gadget', icon: MonitorSmartphone },
+    { name: 'Olahraga', slug: 'olahraga', icon: Guitar },
+    { name: 'Rumah Tangga', slug: 'rumah-tangga', icon: Sofa },
+    { name: 'Pribadi', slug: 'pribadi', icon: Shirt },
 ];
 
 export const banners: Banner[] = [

@@ -1,3 +1,5 @@
+import type { ComponentType } from "react";
+
 export type User = {
   id: string;
   name: string;
@@ -10,7 +12,7 @@ export type Listing = {
   description: string;
   price: number;
   category: string;
-  location: string;
+  location:string;
   images: string[];
   seller: User;
   createdAt: string; // ISO string
@@ -37,6 +39,7 @@ export type Conversation = {
 export type Category = {
     name: string;
     slug: string;
+    icon?: ComponentType<{ className?: string }>;
 };
 
 export type Banner = string;
