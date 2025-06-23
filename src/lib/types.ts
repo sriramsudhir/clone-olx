@@ -12,6 +12,7 @@ export type Listing = {
   description: string;
   price: number;
   category: string;
+  subCategory?: string;
   location:string;
   images: string[];
   seller: User;
@@ -36,10 +37,17 @@ export type Conversation = {
   messages: Message[];
 };
 
+export type SubCategory = {
+  name: string;
+  slug: string;
+  icon?: ComponentType<{ className?: string }>;
+};
+
 export type Category = {
     name: string;
     slug: string;
     icon?: ComponentType<{ className?: string }>;
+    subCategories?: SubCategory[];
 };
 
 export type Banner = string;
