@@ -92,6 +92,7 @@ export default function GlobalSearch({ className }: { className?: string }) {
                                                 width={48}
                                                 height={48}
                                                 className="w-12 h-12 object-cover rounded-md bg-muted"
+                                                data-ai-hint="product image"
                                             />
                                             <div className="flex-1 overflow-hidden">
                                                 <p className="font-semibold truncate text-sm">{listing.title}</p>
