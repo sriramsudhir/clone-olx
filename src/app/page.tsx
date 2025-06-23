@@ -1,50 +1,41 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bell, Search, MapPin, Car, Building2, Bike, Briefcase, Monitor, Dumbbell, Sofa, Shirt } from 'lucide-react';
-import ListingCard from '@/components/listings/ListingCard';
-import { listings } from '@/lib/data';
-import type { LucideIcon } from 'lucide-react';
+import { Bell, Search, Mic, MapPin } from 'lucide-react';
+import ListingGrid from '@/components/listings/ListingGrid';
+import { listings, users, categories as categoryData, banners } from '@/lib/data';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Image from 'next/image';
 
-const categories: { name: string; icon: LucideIcon }[] = [
-  { name: 'Iklan Terdekat', icon: MapPin },
-  { name: 'Mobil', icon: Car },
-  { name: 'Properti', icon: Building2 },
-  { name: 'Motor', icon: Bike },
-  { name: 'Jasa & Loker', icon: Briefcase },
-  { name: 'Gadget', icon: Monitor },
-  { name: 'Olahraga', icon: Dumbbell },
-  { name: 'Rumah Tangga', icon: Sofa },
-  { name: 'Pribadi', icon: Shirt },
-];
-
-function CategoryButton({ name, icon: Icon }: { name: string; icon: LucideIcon }) {
+function CategoryButton({ name, slug }: { name: string; slug: string }) {
   return (
-    <Link href={`/listings?category=${name.toLowerCase().replace(' ', '-')}`} className="flex flex-col items-center justify-center gap-2 p-3 bg-card rounded-xl text-center shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent">
-        <Icon className="w-6 h-6 text-accent-foreground" />
-      </div>
-      <span className="text-xs font-medium text-muted-foreground">{name}</span>
-    </Link>
+    <Button asChild variant={slug === 'all' ? 'default' : 'secondary'} className="rounded-full flex-shrink-0">
+      <Link href={`/listings?category=${slug}`}>{name}</Link>
+    </Button>
   );
 }
 
 export default function HomePage() {
-  const recommendedListings = listings.slice(0, 4);
+  const currentUser = users[0];
 
   return (
-    <div className="space-y-6">
-      {/* Header Section */}
-      <header className="bg-gradient-to-b from-primary/80 to-primary/60 text-primary-foreground p-4 md:p-6 rounded-b-3xl shadow-lg">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h1 className="text-2xl font-bold font-headline">Pencarian</h1>
-            <div className="flex items-center gap-1 text-sm opacity-90">
-              <MapPin className="w-4 h-4" />
-              <span>Slipi, Jakarta Barat</span>
+    <div className="space-y-4">
+      <header className="p-4 space-y-4 bg-card">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Avatar>
+              <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint="person face" />
+              <AvatarFallback>{currentUser.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-sm font-semibold">{currentUser.name}</p>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <MapPin className="w-3 h-3" />
+                <span>Banten, Tangerang Kota</span>
+              </div>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/20">
+          <Button variant="ghost" size="icon" className="rounded-full">
             <Bell className="w-6 h-6" />
           </Button>
         </div>
@@ -52,35 +43,38 @@ export default function HomePage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             type="search"
-            placeholder="Temukan Mobil, Motor, dan lainnya..."
-            className="pl-10 w-full bg-card text-card-foreground placeholder:text-muted-foreground"
+            placeholder="Search BMW 320i..."
+            className="pl-10 w-full rounded-full bg-secondary border-none focus-visible:ring-primary"
           />
+           <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full">
+            <Mic className="w-5 h-5 text-gray-500"/>
+           </Button>
         </div>
       </header>
-
-      {/* Categories Section */}
-      <section className="px-4 md:px-6">
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-bold font-headline">Telusuri Kategori</h2>
-          <Link href="/listings" className="text-sm font-medium text-primary hover:underline">
-            Lihat Semua
-          </Link>
+      
+      <section className="px-4">
+        <div className="w-full aspect-[2/1] relative rounded-xl overflow-hidden">
+             <Image src={banners[0]} alt="Ad Banner" layout="fill" objectFit='cover' data-ai-hint="advertisement banner" />
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
-          {categories.slice(0, 9).map((cat) => (
-            <CategoryButton key={cat.name} {...cat} />
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-bold font-headline px-4">Categories</h2>
+        <div className="flex gap-2 overflow-x-auto px-4 pb-2 -mb-2">
+          {categoryData.map((cat) => (
+            <CategoryButton key={cat.slug} {...cat} />
           ))}
         </div>
       </section>
 
-      {/* Recommendations Section */}
-      <section className="px-4 md:px-6">
-        <h2 className="text-lg font-bold font-headline mb-3">Rekomendasi Baru</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {recommendedListings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
-          ))}
+      <section className="px-4 space-y-3">
+        <div className="flex justify-between items-center">
+            <h2 className="text-lg font-bold font-headline">Fresh Recommendations</h2>
+            <Link href="/listings" className="text-sm font-medium text-primary hover:underline">
+                See All
+            </Link>
         </div>
+        <ListingGrid listings={listings.slice(0, 6)} />
       </section>
     </div>
   );

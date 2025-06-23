@@ -15,6 +15,9 @@ export type Listing = {
   seller: User;
   createdAt: string; // ISO string
   isHighlighted?: boolean;
+  tags?: string[];
+  year?: number;
+  rating?: number;
 };
 
 export type Message = {
@@ -30,3 +33,10 @@ export type Conversation = {
   participants: User[];
   messages: Message[];
 };
+
+export type Category = {
+    name: string;
+    slug: string;
+};
+
+export type Banner = string;

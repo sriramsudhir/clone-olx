@@ -2,6 +2,18 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import MobileNav from '@/components/layout/MobileNav';
 import { Toaster } from "@/components/ui/toaster";
+import { Poppins, Inter } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+});
 
 const APP_NAME = "TradeZone";
 const APP_DESCRIPTION = "Your friendly neighborhood marketplace.";
@@ -25,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#4F46E5",
+  themeColor: "#3B82F6",
 };
 
 export default function RootLayout({
@@ -35,16 +47,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
+      <head />
+      <body className={`${poppins.variable} ${inter.variable} font-body antialiased`}>
         <div className="flex flex-col min-h-screen">
           <main className="flex-grow pb-20 md:pb-0">
-            {children}
+            <div className="md:hidden">
+              {children}
+            </div>
+            <div className="hidden md:flex flex-col items-center justify-center h-screen bg-gray-100">
+              <p className="text-2xl font-bold">Please view on a mobile device</p>
+              <p className="text-muted-foreground">This experience is designed for mobile.</p>
+            </div>
           </main>
           <MobileNav />
         </div>
