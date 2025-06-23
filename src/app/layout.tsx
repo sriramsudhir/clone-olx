@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import MobileNav from '@/components/layout/MobileNav';
 import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import { Toaster } from "@/components/ui/toaster";
 import { Poppins, Inter } from 'next/font/google';
 
@@ -57,6 +58,7 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+          <Footer />
           <MobileNav />
         </div>
         <Toaster />
