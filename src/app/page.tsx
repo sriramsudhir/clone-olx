@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bell, Search, Mic, MapPin } from 'lucide-react';
+import { Bell, Search, MapPin, ChevronDown } from 'lucide-react';
 import ListingGrid from '@/components/listings/ListingGrid';
 import { listings, users, categories as categoryData, banners } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import CategoryGrid from '@/components/CategoryGrid';
 import { Card } from '@/components/ui/card';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Label } from '@/components/ui/label';
 
 export default function HomePage() {
   const currentUser = users[0];
@@ -23,10 +25,30 @@ export default function HomePage() {
             </Avatar>
             <div>
               <p className="text-sm font-semibold">{currentUser.name}</p>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <MapPin className="w-3 h-3" />
-                <span>Banten, Tangerang Kota</span>
-              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground cursor-pointer hover:text-primary">
+                    <MapPin className="w-3 h-3" />
+                    <span>Banten, Tangerang Kota</span>
+                    <ChevronDown className="w-3 h-3" />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium leading-none">Change Location</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Enter a new location to see listings near you.
+                      </p>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="location">Location</Label>
+                      <Input id="location" defaultValue="Banten, Tangerang Kota" />
+                      <Button>Change</Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           <Button variant="ghost" size="icon" className="rounded-full">
@@ -40,9 +62,6 @@ export default function HomePage() {
             placeholder="Search BMW 320i..."
             className="pl-10 w-full rounded-full bg-background focus-visible:ring-primary"
           />
-           <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full">
-            <Mic className="w-5 h-5 text-gray-500"/>
-           </Button>
         </div>
       </header>
       

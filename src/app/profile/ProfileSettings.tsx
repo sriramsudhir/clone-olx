@@ -5,6 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Bell, LogOut, Moon, Shield, User } from "lucide-react";
 import Link from 'next/link';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function ProfileSettings() {
   return (
@@ -12,14 +24,43 @@ export default function ProfileSettings() {
         <div className="p-4 bg-secondary/50 rounded-lg">
             <h3 className="font-semibold mb-4">Account</h3>
             <div className="space-y-2">
-                <Link href="#">
-                    <div className="flex items-center justify-between p-3 bg-background rounded-lg hover:bg-secondary/70 transition-colors cursor-pointer">
-                        <div className="flex items-center gap-4">
-                            <User className="w-5 h-5 text-primary"/>
-                            <span className="font-medium">Edit Profile</span>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <div className="flex items-center justify-between p-3 bg-background rounded-lg hover:bg-secondary/70 transition-colors cursor-pointer">
+                            <div className="flex items-center gap-4">
+                                <User className="w-5 h-5 text-primary"/>
+                                <span className="font-medium">Edit Profile</span>
+                            </div>
                         </div>
-                    </div>
-                </Link>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                        <DialogTitle>Edit profile</DialogTitle>
+                        <DialogDescription>
+                            Make changes to your profile here. Click save when you're done.
+                        </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="name" className="text-right">
+                                Name
+                                </Label>
+                                <Input id="name" defaultValue="Ahmad Hudzaifah" className="col-span-3" />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="username" className="text-right">
+                                Username
+                                </Label>
+                                <Input id="username" defaultValue="@ahmad" className="col-span-3" />
+                            </div>
+                        </div>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button type="submit">Save changes</Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
                 <Link href="#">
                     <div className="flex items-center justify-between p-3 bg-background rounded-lg hover:bg-secondary/70 transition-colors cursor-pointer">
                         <div className="flex items-center gap-4">

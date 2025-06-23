@@ -8,10 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ListingGrid from "@/components/listings/ListingGrid";
 import ProfileSettings from "./ProfileSettings";
 
-export default function ProfilePage() {
+export default function ProfilePage({ searchParams }: { searchParams: { tab: string } }) {
   const currentUser = users[0];
   const myListings = listings.filter(l => l.seller.id === currentUser.id);
   const savedListings = listings.slice(0, 4); // Placeholder
+  const activeTab = searchParams.tab || 'listings';
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -28,12 +29,14 @@ export default function ProfilePage() {
                 <h1 className="text-2xl font-bold font-headline">{currentUser.name}</h1>
                 <p className="text-muted-foreground">Member since May 2024</p>
               </div>
-               <Button size="sm" className="w-full sm:w-auto sm:ml-auto rounded-full">Edit Profile</Button>
+               <Button asChild size="sm" className="w-full sm:w-auto sm:ml-auto rounded-full">
+                <Link href="/profile?tab=settings">Edit Profile</Link>
+               </Button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="px-2 sm:px-6">
-          <Tabs defaultValue="listings" className="w-full">
+          <Tabs defaultValue={activeTab} className="w-full">
             <div className="border-b">
               <TabsList className="bg-transparent p-0 -mb-px">
                 <TabsTrigger value="listings" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">My Listings</TabsTrigger>
