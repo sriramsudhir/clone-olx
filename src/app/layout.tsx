@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#3B82F6",
+  themeColor: "#7C3AED",
 };
 
 export default function RootLayout({
@@ -49,11 +49,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={`${poppins.variable} ${inter.variable} font-body antialiased bg-secondary/20`}>
+      <body className={`${poppins.variable} ${inter.variable} font-body antialiased bg-secondary/50`}>
         <div className="flex flex-col min-h-screen">
           <Header />
-          <main className="flex-grow pb-20 md:pb-6">
-            <div className="container mx-auto h-full px-0 md:px-4 py-0 md:py-6">
+          <main className="flex-grow">
+            <div className="container mx-auto px-4 py-6">
               {children}
             </div>
           </main>

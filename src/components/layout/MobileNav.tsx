@@ -16,7 +16,7 @@ const navLinks = [
 export default function MobileNav() {
   const pathname = usePathname();
 
-  // Hide nav on listing detail page
+  // Hide nav on listing detail page on mobile for a more immersive view
   if (pathname.startsWith('/listings/')) {
     return null;
   }

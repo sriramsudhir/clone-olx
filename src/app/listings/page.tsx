@@ -26,14 +26,17 @@ export default function ListingsPage() {
         </div>
       </aside>
       <main className="flex-1">
-        <header className="flex items-center justify-between mb-4 bg-card p-4 rounded-lg md:bg-transparent md:p-0 md:rounded-none">
+        <header className="flex items-center justify-between mb-4 md:mb-6">
           <div className="flex items-center gap-2">
              <Button variant="ghost" size="icon" onClick={() => router.back()} className="mr-2 rounded-full md:hidden">
               <ArrowLeft className="w-6 h-6" />
             </Button>
-            <h1 className="text-lg font-bold font-headline capitalize">
-              {category ? `${category.replace(/-/g, ' ')}` : 'All Listings'}
-            </h1>
+            <div>
+                <h1 className="text-2xl font-bold font-headline capitalize">
+                {category ? `${category.replace(/-/g, ' ')}` : 'All Listings'}
+                </h1>
+                <p className="text-sm text-muted-foreground">{filteredListings.length} results found</p>
+            </div>
           </div>
           <div className="md:hidden">
             <Sheet>
@@ -48,7 +51,7 @@ export default function ListingsPage() {
                   <SheetTitle>Filters</SheetTitle>
                 </SheetHeader>
                 <div className="py-4">
-                  <FilterSortBar />
+                  <FilterSortBar isMobile />
                 </div>
               </SheetContent>
             </Sheet>

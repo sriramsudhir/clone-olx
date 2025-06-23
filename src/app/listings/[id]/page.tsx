@@ -3,16 +3,19 @@ import { getListingById } from '@/lib/data';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Heart, Share2, ArrowLeft, Info, Star, MessageSquare } from 'lucide-react';
+import { Heart, Share2, ArrowLeft, Info, Star, MessageSquare, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 export default function ListingDetailPage() {
   const router = useRouter();
   const params = useParams();
   const listing = getListingById(params.id as string);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   if (!listing) {
     return (
@@ -30,107 +33,132 @@ export default function ListingDetailPage() {
     );
   }
 
+  const formatPrice = (price: number) => {
+    return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`;
+  };
+
   return (
-    <div className="bg-card md:bg-transparent rounded-lg md:rounded-none">
-        <div className="md:grid md:grid-cols-12 md:gap-8 lg:gap-12">
-            <div className="md:col-span-7 lg:col-span-8">
-                <div className="relative">
-                    <div className="absolute top-4 left-4 z-10 md:hidden">
-                        <Button variant="secondary" size="icon" onClick={() => router.back()} className="rounded-full bg-black/30 hover:bg-black/50 text-white">
-                            <ArrowLeft className="w-5 h-5" />
-                        </Button>
-                    </div>
-                    <div className="absolute top-4 right-4 z-10 flex gap-2">
-                        <Button variant="secondary" size="icon" className="rounded-full bg-black/30 hover:bg-black/50 text-white">
-                            <Share2 className="w-5 h-5" />
-                        </Button>
-                        <Button variant="secondary" size="icon" className="rounded-full bg-black/30 hover:bg-black/50 text-white">
-                            <Heart className="w-5 h-5" />
-                        </Button>
-                    </div>
-                    
-                    <div className="relative w-full aspect-square md:rounded-lg overflow-hidden">
-                        <Image
-                            src={listing.images[0]}
-                            alt={listing.title}
-                            layout="fill"
-                            objectFit="cover"
-                            className="bg-muted"
-                            data-ai-hint="product image"
-                        />
-                        {listing.isHighlighted && (
-                            <div className="absolute top-16 left-0 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-r-lg z-10 flex items-center gap-1">
-                                <Star className="w-3 h-3 fill-yellow-500 text-yellow-600"/> HIGHLIGHT
-                            </div>
-                        )}
-                        {listing.year && (
-                            <Badge variant="secondary" className="absolute bottom-4 right-4 bg-black/50 text-white border-none">{listing.year}</Badge>
-                        )}
-                    </div>
-                </div>
-            </div>
+    <div>
+      <div className="flex items-center mb-4">
+        <Button variant="ghost" size="icon" onClick={() => router.back()} className="mr-2 rounded-full hidden md:flex">
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
+        <span className="text-sm text-muted-foreground">Back to results</span>
+      </div>
 
-            <div className="md:col-span-5 lg:col-span-4">
-                <div className="p-4 md:p-0 space-y-4 pb-24 md:pb-4">
-                    <div className="md:bg-card md:p-6 md:rounded-lg">
-                        <div>
-                            {listing.tags && (
-                                <div className="flex gap-2 mb-2 flex-wrap">
-                                    {listing.tags.map(tag => (
-                                        <Badge key={tag} variant="secondary">{tag}</Badge>
-                                    ))}
-                                </div>
-                            )}
-                            <h1 className="text-2xl md:text-3xl font-bold font-headline">{listing.title}</h1>
-                        </div>
-
-                        <div className="bg-primary/10 p-4 rounded-xl mt-4">
-                            <p className="text-2xl font-bold text-primary">{`Rp ${new Intl.NumberFormat('id-ID').format(listing.price)}`}</p>
-                            <div className="flex items-center text-sm text-muted-foreground mt-1">
-                                <span>bisa nego</span>
-                                <Info className="w-4 h-4 ml-2"/>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Column - Image Gallery */}
+        <div className="lg:col-span-2">
+            <Card>
+                <CardContent className="p-4">
+                    <div className="relative">
+                        <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4">
+                            <Image
+                                src={listing.images[selectedImage]}
+                                alt={listing.title}
+                                layout="fill"
+                                objectFit="cover"
+                                className="bg-muted"
+                                data-ai-hint="product image"
+                            />
+                             <div className="absolute top-4 right-4 z-10 flex gap-2">
+                                <Button variant="secondary" size="icon" className="rounded-full bg-black/30 hover:bg-black/50 text-white">
+                                    <Share2 className="w-5 h-5" />
+                                </Button>
+                                <Button variant="secondary" size="icon" className="rounded-full bg-black/30 hover:bg-black/50 text-white">
+                                    <Heart className="w-5 h-5" />
+                                </Button>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="md:bg-card md:p-6 md:rounded-lg">
-                        <h2 className="font-semibold font-headline text-lg">Description</h2>
-                        <p className="text-foreground/80 mt-2 text-sm whitespace-pre-line">
-                            {listing.description}
-                        </p>
-                        <Button variant="link" className="p-0 h-auto text-primary">Read More</Button>
-                    </div>
-                    
-                    <div className="md:bg-card md:p-6 md:rounded-lg">
-                        <h2 className="font-semibold font-headline text-lg mb-2">Seller Information</h2>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-4">
-                                <Avatar className="h-12 w-12">
-                                    <AvatarImage src={listing.seller.avatarUrl} alt={listing.seller.name} data-ai-hint="person face" />
-                                    <AvatarFallback>{listing.seller.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <p className="font-semibold">{listing.seller.name}</p>
-                                    <p className="text-sm text-muted-foreground">Member since May 2024</p>
-                                </div>
-                            </div>
-                            <Button variant="outline" size="sm" className="rounded-full">View Profile</Button>
+                        <div className="grid grid-cols-5 gap-2">
+                            {listing.images.map((img, index) => (
+                                <button key={index} onClick={() => setSelectedImage(index)} className={cn("aspect-square relative rounded-md overflow-hidden transition-all", selectedImage === index ? 'ring-2 ring-primary ring-offset-2' : 'opacity-70 hover:opacity-100')}>
+                                     <Image
+                                        src={img}
+                                        alt={`${listing.title} thumbnail ${index + 1}`}
+                                        layout="fill"
+                                        objectFit="cover"
+                                        className="bg-muted"
+                                     />
+                                </button>
+                            ))}
                         </div>
                     </div>
-                     <div className="hidden md:block">
-                        <Button size="lg" className="w-full rounded-lg">
-                            <MessageSquare className="mr-2 h-5 w-5"/> Chat Now
-                        </Button>
+                </CardContent>
+            </Card>
+            <Card className="mt-6">
+                <CardHeader>
+                    <CardTitle>Description</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex gap-2 mb-4 flex-wrap">
+                        {listing.tags?.map(tag => (
+                            <Badge key={tag} variant="secondary">{tag}</Badge>
+                        ))}
+                         {listing.year && <Badge variant="outline">Year: {listing.year}</Badge>}
                     </div>
-                </div>
-            </div>
+                    <p className="text-foreground/80 whitespace-pre-line">
+                        {listing.description}
+                    </p>
+                </CardContent>
+            </Card>
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-card/80 backdrop-blur-sm border-t md:hidden">
-            <Button size="lg" className="w-full rounded-full">
-                <MessageSquare className="mr-2 h-5 w-5"/> Chat Now
-            </Button>
+        {/* Right Column - Info */}
+        <div className="lg:col-span-1 space-y-6">
+            <Card>
+                <CardContent className="p-6">
+                    <h1 className="text-2xl md:text-3xl font-bold font-headline mb-2">{listing.title}</h1>
+                    <p className="text-3xl font-bold text-primary">{formatPrice(listing.price)}</p>
+                    <div className="flex items-center text-sm text-muted-foreground mt-1">
+                        <span>bisa nego</span>
+                        <Info className="w-4 h-4 ml-2"/>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Seller Information</CardTitle>
+                </CardHeader>
+                <CardContent>
+                     <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                            <Avatar className="h-12 w-12">
+                                <AvatarImage src={listing.seller.avatarUrl} alt={listing.seller.name} data-ai-hint="person face" />
+                                <AvatarFallback>{listing.seller.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <p className="font-semibold">{listing.seller.name}</p>
+                                <p className="text-sm text-muted-foreground">Member since May 2024</p>
+                            </div>
+                        </div>
+                        <Button variant="outline" size="sm" asChild>
+                            <Link href="#">View Profile</Link>
+                        </Button>
+                    </div>
+                    <Button size="lg" className="w-full mt-4">
+                        <MessageSquare className="mr-2 h-5 w-5"/> Chat Now
+                    </Button>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Location</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                        <MapPin className="w-4 h-4" />
+                        <span>{listing.location}</span>
+                    </div>
+                    <div className="aspect-video w-full rounded-md overflow-hidden bg-muted">
+                        <Image src="https://placehold.co/400x200" alt="Map placeholder" width={400} height={200} className="w-full h-full object-cover" data-ai-hint="map street" />
+                    </div>
+                </CardContent>
+            </Card>
         </div>
+      </div>
     </div>
   );
 }
