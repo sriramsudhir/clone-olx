@@ -39,10 +39,10 @@ export default function HomePage() {
             </Avatar>
             <div>
               <p className="text-sm font-semibold">{currentUser.name}</p>
-              <Link href="/location" className="block">
-                <div className="flex items-center gap-1 text-sm text-muted-foreground cursor-pointer hover:text-primary">
-                  <MapPin className="w-4 h-4" />
-                  <span>Banten, Tangerang Kota</span>
+              <Link href="/location" className="mt-1">
+                <div className="flex items-center gap-1 text-sm text-foreground cursor-pointer hover:text-primary">
+                  <MapPin className="w-4 h-4 text-primary" />
+                  <span className="font-medium">Banten, Tangerang Kota</span>
                   <ChevronDown className="w-4 h-4" />
                 </div>
               </Link>
