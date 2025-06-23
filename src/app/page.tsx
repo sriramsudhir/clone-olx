@@ -1,3 +1,6 @@
+
+"use client";
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,9 +14,21 @@ import { Card } from '@/components/ui/card';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
 import GlobalSearch from '@/components/GlobalSearch';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
+import * as React from 'react';
 
 export default function HomePage() {
   const currentUser = users[0];
+   const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
 
   return (
     <div className="space-y-8">
@@ -60,9 +75,27 @@ export default function HomePage() {
       </header>
       
       <section>
-        <div className="w-full aspect-[2/1] md:aspect-[3/1] lg:aspect-[4/1] relative rounded-2xl overflow-hidden shadow-sm">
-             <Image src={banners[0]} alt="Ad Banner" layout="fill" objectFit='cover' className="bg-muted" data-ai-hint="advertisement banner" />
-        </div>
+        <Carousel 
+          className="w-full"
+          plugins={[plugin.current]}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+          opts={{
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {banners.map((bannerSrc, index) => (
+              <CarouselItem key={index}>
+                <div className="w-full aspect-[2/1] md:aspect-[3/1] lg:aspect-[4/1] relative rounded-2xl overflow-hidden shadow-sm">
+                  <Image src={bannerSrc} alt={`Ad Banner ${index + 1}`} layout="fill" objectFit='cover' className="bg-muted" data-ai-hint="advertisement banner" />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext className="hidden md:flex" />
+        </Carousel>
       </section>
 
       <section>

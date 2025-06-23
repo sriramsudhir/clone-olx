@@ -25,9 +25,9 @@ import {
 
 
 export const users: User[] = [
-  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100', phoneNumber: '081234567890', showPhoneNumber: true },
-  { id: 'user-2', name: 'Budi Santoso', avatarUrl: 'https://placehold.co/100x100', phoneNumber: '089876543210', showPhoneNumber: true },
-  { id: 'user-3', name: 'Charlie', avatarUrl: 'https://placehold.co/100x100' },
+  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100.png', phoneNumber: '081234567890', showPhoneNumber: true },
+  { id: 'user-2', name: 'Budi Santoso', avatarUrl: 'https://placehold.co/100x100.png', phoneNumber: '089876543210', showPhoneNumber: true },
+  { id: 'user-3', name: 'Charlie', avatarUrl: 'https://placehold.co/100x100.png' },
 ];
 
 export const listings: Listing[] = [
@@ -40,7 +40,7 @@ export const listings: Listing[] = [
     category: 'Motor',
     subCategory: 'scooter',
     location: 'Keboran Baru, Jakarta Selatan',
-    images: ['https://placehold.co/800x600', 'https://placehold.co/800x600', 'https://placehold.co/800x600', 'https://placehold.co/800x600'],
+    images: ['https://placehold.co/800x600.png', 'https://placehold.co/800x600.png', 'https://placehold.co/800x600.png', 'https://placehold.co/800x600.png'],
     seller: users[1],
     createdAt: '2024-07-22T14:00:00Z',
     isHighlighted: true,
@@ -58,7 +58,7 @@ export const listings: Listing[] = [
     category: 'Elektronik',
     subCategory: 'smartphone',
     location: 'Cilandak, Jakarta Selatan',
-    images: ['https://placehold.co/800x600', 'https://placehold.co/800x600'],
+    images: ['https://placehold.co/800x600.png', 'https://placehold.co/800x600.png'],
     seller: users[0],
     createdAt: '2024-07-21T10:00:00Z',
     isHighlighted: true,
@@ -75,7 +75,7 @@ export const listings: Listing[] = [
     category: 'Mobil',
     subCategory: 'suv',
     location: 'Kebayoran Baru, Jakarta Selatan',
-    images: ['https://placehold.co/800x600', 'https://placehold.co/800x600', 'https://placehold.co/800x600'],
+    images: ['https://placehold.co/800x600.png', 'https://placehold.co/800x600.png', 'https://placehold.co/800x600.png'],
     seller: users[1],
     createdAt: '2024-07-21T11:30:00Z',
     isHighlighted: true,
@@ -92,7 +92,7 @@ export const listings: Listing[] = [
     category: 'Mobil',
     subCategory: 'coupe',
     location: 'Slipi, Jakarta Barat',
-    images: ['https://placehold.co/800x600'],
+    images: ['https://placehold.co/800x600.png'],
     seller: users[0],
     createdAt: '2024-07-19T09:00:00Z',
     tags: ['Rare Item'],
@@ -108,7 +108,7 @@ export const listings: Listing[] = [
     category: 'Mobil',
     subCategory: 'coupe',
     location: 'Slipi, Jakarta Barat',
-    images: ['https://placehold.co/800x600', 'https://placehold.co/800x600'],
+    images: ['https://placehold.co/800x600.png', 'https://placehold.co/800x600.png'],
     seller: users[1],
     createdAt: '2024-07-18T16:45:00Z',
     tags: [],
@@ -124,7 +124,7 @@ export const listings: Listing[] = [
     category: 'Elektronik',
     subCategory: 'laptop',
     location: 'Palo Alto, CA',
-    images: ['https://placehold.co/800x600', 'https://placehold.co/800x600'],
+    images: ['https://placehold.co/800x600.png', 'https://placehold.co/800x600.png'],
     seller: users[2],
     createdAt: '2024-05-23T08:20:00Z',
     tags: ['Like New'],
@@ -260,5 +260,7 @@ export const categories: Category[] = [
 ];
 
 export const banners: Banner[] = [
-    'https://placehold.co/1200x400'
+    'https://placehold.co/1200x400.png',
+    'https://placehold.co/1200x400.png',
+    'https://placehold.co/1200x400.png'
 ];
