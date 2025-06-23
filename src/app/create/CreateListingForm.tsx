@@ -22,12 +22,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { categories } from "@/lib/data";
-import { Wand2, LocateFixed, UploadCloud, Loader2, X } from "lucide-react";
+import { LocateFixed, UploadCloud, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { getImprovedListing, getSuggestedCategories } from "./actions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 const listingFormSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -42,8 +39,6 @@ type ListingFormValues = z.infer<typeof listingFormSchema>;
 
 export default function CreateListingForm() {
   const { toast } = useToast();
-  const [isImproving, setIsImproving] = useState(false);
-  const [suggestedCats, setSuggestedCats] = useState<string[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const form = useForm<ListingFormValues>({
@@ -56,37 +51,6 @@ export default function CreateListingForm() {
       location: "",
     },
   });
-
-  const handleImproveListing = async () => {
-    const { title, description, category } = form.getValues();
-    if (!title || !description) {
-      toast({
-        variant: "destructive",
-        title: "Title and Description needed",
-        description: "Please provide a title and description to improve.",
-      });
-      return;
-    }
-    setIsImproving(true);
-    const result = await getImprovedListing({ title, description, category });
-    if (result.success && result.data) {
-      form.setValue("title", result.data.improvedTitle, { shouldValidate: true });
-      form.setValue("description", result.data.improvedDescription, { shouldValidate: true });
-      if (categories.map(c => c.name).includes(result.data.suggestedCategory)) {
-        form.setValue("category", result.data.suggestedCategory, { shouldValidate: true });
-      }
-      toast({ title: "Listing improved with AI!" });
-    } else {
-      toast({ variant: "destructive", title: "Error", description: result.error });
-    }
-
-    const catResult = await getSuggestedCategories({ title, description });
-    if(catResult.success && catResult.data) {
-        setSuggestedCats(catResult.data);
-    }
-
-    setIsImproving(false);
-  };
   
   const handleGetLocation = () => {
     if (navigator.geolocation) {
@@ -146,7 +110,7 @@ export default function CreateListingForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a category" />
@@ -160,13 +124,6 @@ export default function CreateListingForm() {
                     ))}
                   </SelectContent>
                 </Select>
-                {suggestedCats.length > 0 && (
-                    <div className="flex gap-2 pt-2 flex-wrap">
-                        {suggestedCats.map(cat => (
-                            <Badge key={cat} variant="secondary" className="cursor-pointer" onClick={() => form.setValue('category', cat, {shouldValidate: true})}>{cat}</Badge>
-                        ))}
-                    </div>
-                )}
                 <FormMessage />
               </FormItem>
             )}
@@ -190,22 +147,6 @@ export default function CreateListingForm() {
             </FormItem>
           )}
         />
-        
-        <Card className="bg-primary/10 border-primary/20">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg font-headline">
-                    <Wand2 className="text-primary"/> AI Assistant
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-sm text-foreground/80 mb-4">Let AI improve your title and description to attract more buyers.</p>
-                <Button type="button" onClick={handleImproveListing} disabled={isImproving}>
-                  {isImproving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-                  {isImproving ? 'Improving...' : 'Improve with AI'}
-                </Button>
-            </CardContent>
-        </Card>
-
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <FormField
