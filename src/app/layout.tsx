@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import MobileNav from '@/components/layout/MobileNav';
+import Header from '@/components/layout/Header';
 import { Toaster } from "@/components/ui/toaster";
 import { Poppins, Inter } from 'next/font/google';
 
@@ -48,15 +49,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={`${poppins.variable} ${inter.variable} font-body antialiased`}>
+      <body className={`${poppins.variable} ${inter.variable} font-body antialiased bg-secondary/20`}>
         <div className="flex flex-col min-h-screen">
-          <main className="flex-grow pb-20 md:pb-0">
-            <div className="md:hidden">
+          <Header />
+          <main className="flex-grow pb-20 md:pb-6">
+            <div className="container mx-auto h-full px-0 md:px-4 py-0 md:py-6">
               {children}
-            </div>
-            <div className="hidden md:flex flex-col items-center justify-center h-screen bg-gray-100">
-              <p className="text-2xl font-bold">Please view on a mobile device</p>
-              <p className="text-muted-foreground">This experience is designed for mobile.</p>
             </div>
           </main>
           <MobileNav />

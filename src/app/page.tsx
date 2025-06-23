@@ -19,9 +19,9 @@ export default function HomePage() {
   const currentUser = users[0];
 
   return (
-    <div className="space-y-4">
-      <header className="p-4 space-y-4 bg-card">
-        <div className="flex justify-between items-center">
+    <div className="space-y-6">
+      <header className="p-4 space-y-4 bg-card md:bg-transparent md:p-0">
+        <div className="flex justify-between items-center md:hidden">
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint="person face" />
@@ -39,7 +39,7 @@ export default function HomePage() {
             <Bell className="w-6 h-6" />
           </Button>
         </div>
-        <div className="relative">
+        <div className="relative md:hidden">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             type="search"
@@ -52,29 +52,29 @@ export default function HomePage() {
         </div>
       </header>
       
-      <section className="px-4">
-        <div className="w-full aspect-[2/1] relative rounded-xl overflow-hidden">
+      <section className="px-4 md:px-0">
+        <div className="w-full aspect-[2/1] md:aspect-[3/1] lg:aspect-[4/1] relative rounded-xl overflow-hidden">
              <Image src={banners[0]} alt="Ad Banner" layout="fill" objectFit='cover' data-ai-hint="advertisement banner" />
         </div>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold font-headline px-4">Categories</h2>
-        <div className="flex gap-2 overflow-x-auto px-4 pb-2 -mb-2">
+        <h2 className="text-lg font-bold font-headline px-4 md:px-0">Categories</h2>
+        <div className="flex gap-2 overflow-x-auto px-4 md:px-0 pb-2">
           {categoryData.map((cat) => (
             <CategoryButton key={cat.slug} {...cat} />
           ))}
         </div>
       </section>
 
-      <section className="px-4 space-y-3">
+      <section className="px-4 md:px-0 space-y-3">
         <div className="flex justify-between items-center">
             <h2 className="text-lg font-bold font-headline">Fresh Recommendations</h2>
             <Link href="/listings" className="text-sm font-medium text-primary hover:underline">
                 See All
             </Link>
         </div>
-        <ListingGrid listings={listings.slice(0, 6)} />
+        <ListingGrid listings={listings.slice(0, 10)} />
       </section>
     </div>
   );

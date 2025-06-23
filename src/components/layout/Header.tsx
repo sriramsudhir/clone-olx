@@ -16,10 +16,10 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-card shadow-sm sticky top-0 z-40">
+    <header className="bg-card shadow-sm sticky top-0 z-40 hidden md:block">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-8">
             <Link href="/" className="text-2xl font-bold font-headline text-primary">
               TradeZone
             </Link>
@@ -30,40 +30,42 @@ export default function Header() {
               <Input
                 type="search"
                 placeholder="Search for anything..."
-                className="pl-10 w-full"
+                className="pl-10 w-full rounded-full"
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <nav className="hidden md:flex items-center space-x-2">
+          <div className="flex items-center space-x-4">
+            <nav className="flex items-center space-x-2">
               {navLinks.map(({ href, label, icon: Icon }) => (
                 <Button
                   key={href}
                   variant="ghost"
                   asChild
                   className={cn(
-                    "text-muted-foreground",
-                    pathname === href && "text-primary"
+                    "text-muted-foreground hover:text-primary",
+                    pathname.startsWith(href) && "text-primary"
                   )}
                 >
                   <Link href={href}>
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-6 w-6" />
                     <span className="sr-only">{label}</span>
                   </Link>
                 </Button>
               ))}
-              <Button variant="ghost" className="text-muted-foreground">
-                 <User className="h-5 w-5" />
-                 <span className="sr-only">Profile</span>
+              <Button asChild variant="ghost" className={cn("text-muted-foreground hover:text-primary", pathname.startsWith('/profile') && "text-primary")}>
+                 <Link href="/profile">
+                    <User className="h-6 w-6" />
+                    <span className="sr-only">Profile</span>
+                 </Link>
               </Button>
             </nav>
+            <div className="h-8 border-l"></div>
             <Button asChild>
               <Link href="/create">
                 <PlusCircle className="mr-2 h-5 w-5" />
-                <span className="hidden sm:inline">Post Listing</span>
-                <span className="inline sm:hidden">Post</span>
+                Post Listing
               </Link>
             </Button>
           </div>
