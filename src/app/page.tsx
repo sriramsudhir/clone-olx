@@ -11,8 +11,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import CategoryGrid from '@/components/CategoryGrid';
 import { Card } from '@/components/ui/card';
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
-import { Label } from '@/components/ui/label';
 import GlobalSearch from '@/components/GlobalSearch';
 import {
   Carousel,
@@ -41,30 +39,13 @@ export default function HomePage() {
             </Avatar>
             <div>
               <p className="text-sm font-semibold">{currentUser.name}</p>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground cursor-pointer hover:text-primary">
-                    <MapPin className="w-3 h-3" />
-                    <span>Banten, Tangerang Kota</span>
-                    <ChevronDown className="w-3 h-3" />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-80">
-                  <div className="grid gap-4">
-                    <div className="space-y-2">
-                      <h4 className="font-medium leading-none">Change Location</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Enter a new location to see listings near you.
-                      </p>
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="location">Location</Label>
-                      <Input id="location" defaultValue="Banten, Tangerang Kota" />
-                      <Button>Change</Button>
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
+              <Link href="/location" className="block">
+                <div className="flex items-center gap-1 text-xs text-muted-foreground cursor-pointer hover:text-primary">
+                  <MapPin className="w-3 h-3" />
+                  <span>Banten, Tangerang Kota</span>
+                  <ChevronDown className="w-3 h-3" />
+                </div>
+              </Link>
             </div>
           </div>
           <Button variant="ghost" size="icon" className="rounded-full">
