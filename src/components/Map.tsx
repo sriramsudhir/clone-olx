@@ -1,8 +1,9 @@
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import type { LatLngExpression } from 'leaflet';
+import type { LatLngExpression, Map as LeafletMap } from 'leaflet';
 import L from 'leaflet';
+import { useCallback } from 'react';
 
 // This is a common fix for a known issue with Leaflet and Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -18,6 +19,15 @@ const OLA_MAP_TILE_URL = `https://api.maps.olakrutrim.com/krutrim/v1/map/raster/
 
 
 export default function Map({ position, popupText }: { position: LatLngExpression, popupText?: string }) {
+  const mapRef = useCallback((node: LeafletMap | null) => {
+    if (node !== null) {
+      // This is to fix a known issue where tiles don't load correctly.
+      setTimeout(() => {
+        node.invalidateSize();
+      }, 100);
+    }
+  }, []);
+  
   if (!process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY || process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY === "your_api_key_here") {
     return (
         <div className="h-full w-full bg-muted flex items-center justify-center text-muted-foreground p-4 text-center">
@@ -27,7 +37,13 @@ export default function Map({ position, popupText }: { position: LatLngExpressio
   }
 
   return (
-    <MapContainer center={position} zoom={15} scrollWheelZoom={false} className="h-full w-full rounded-md z-0">
+    <MapContainer
+      center={position}
+      zoom={15}
+      scrollWheelZoom={false}
+      className="h-full w-full rounded-md"
+      ref={mapRef}
+    >
       <TileLayer
         attribution={OLA_MAP_ATTRIBUTION}
         url={OLA_MAP_TILE_URL}
