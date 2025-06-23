@@ -7,6 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import type { Conversation, User } from '@/lib/types';
 import { Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // Assuming current user is user-1 for mock purposes
 const CURRENT_USER_ID = 'user-1';
@@ -22,6 +23,12 @@ export default function ConversationList({
     conversations: Conversation[],
     activeConversationId?: string
 }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b">
@@ -53,7 +60,7 @@ export default function ConversationList({
                 <div className="flex justify-between items-center">
                   <h3 className="font-semibold truncate">{otherUser?.name}</h3>
                   <span className="text-xs text-muted-foreground">
-                    {new Date(lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {isClient ? new Date(lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null}
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground truncate">{convo.listing.title}</p>
