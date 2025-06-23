@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Search, PlusCircle, MessageSquare, Heart, User, LogOut, Settings } from "lucide-react";
+import { PlusCircle, MessageSquare, Heart, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { users } from "@/lib/data";
 import { ThemeToggle } from "../ThemeToggle";
+import GlobalSearch from "../GlobalSearch";
 
 const navLinks = [
   { href: "/saved", label: "Saved", icon: Heart },
@@ -31,14 +31,7 @@ export default function Header() {
           </div>
 
           <div className="flex-1 flex justify-center px-4 lg:px-12">
-            <div className="w-full max-w-lg relative">
-              <Input
-                type="search"
-                placeholder="Search for anything..."
-                className="pl-10 w-full rounded-full bg-secondary border-none focus-visible:ring-primary"
-              />
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            </div>
+            <GlobalSearch className="w-full max-w-lg" />
           </div>
 
           <div className="flex items-center space-x-2">

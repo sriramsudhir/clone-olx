@@ -10,6 +10,7 @@ import CategoryGrid from '@/components/CategoryGrid';
 import { Card } from '@/components/ui/card';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
+import GlobalSearch from '@/components/GlobalSearch';
 
 export default function HomePage() {
   const currentUser = users[0];
@@ -55,14 +56,7 @@ export default function HomePage() {
             <Bell className="w-6 h-6" />
           </Button>
         </div>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-          <Input
-            type="search"
-            placeholder="Search BMW 320i..."
-            className="pl-10 w-full rounded-full bg-background focus-visible:ring-primary"
-          />
-        </div>
+        <GlobalSearch />
       </header>
       
       <section>
