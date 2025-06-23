@@ -17,6 +17,8 @@ export type Listing = {
   category: string;
   subCategory?: string;
   location:string;
+  lat?: number;
+  lng?: number;
   images: string[];
   seller: User;
   createdAt: string; // ISO string

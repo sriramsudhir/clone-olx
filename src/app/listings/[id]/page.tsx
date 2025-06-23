@@ -1,6 +1,4 @@
-
-import { getListingById, listings } from '@/lib/data';
-import Image from 'next/image';
+import { getListingById } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Info, MessageSquare, MapPin, Phone } from 'lucide-react';
@@ -11,6 +9,8 @@ import ListingGrid from '@/components/listings/ListingGrid';
 import { notFound } from 'next/navigation';
 import ImageGallery from './ImageGallery';
 import BackButton from '@/components/layout/BackButton';
+import { listings } from '@/lib/data';
+import ListingMap from './ListingMap';
 
 type ListingDetailPageProps = {
   params: { id: string };
@@ -48,7 +48,6 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column - Image Gallery */}
         <div className="lg:col-span-2">
             <ImageGallery listing={listing} />
             <Card className="mt-6">
@@ -69,7 +68,6 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
             </Card>
         </div>
 
-        {/* Right Column - Info */}
         <div className="lg:col-span-1 space-y-6">
             <Card>
                 <CardContent className="p-6">
@@ -127,7 +125,7 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
                         <span>{listing.location}</span>
                     </div>
                     <div className="aspect-video w-full rounded-md overflow-hidden bg-muted">
-                        {/* Map placeholder */}
+                        <ListingMap listing={listing} />
                     </div>
                 </CardContent>
             </Card>
