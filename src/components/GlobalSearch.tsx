@@ -12,13 +12,17 @@ import type { Listing } from '@/lib/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
-const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(price);
+const formatPrice = (price: number, priceTo?: number) => {
+    const formatter = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+    if (priceTo && priceTo > price) {
+        return `${formatter.format(price)} - ${formatter.format(priceTo)}`;
+    }
+    return formatter.format(price);
 };
 
 export default function GlobalSearch({ className }: { className?: string }) {
@@ -91,7 +95,7 @@ export default function GlobalSearch({ className }: { className?: string }) {
                                             />
                                             <div className="flex-1 overflow-hidden">
                                                 <p className="font-semibold truncate text-sm">{listing.title}</p>
-                                                <p className="text-sm text-primary">{formatPrice(listing.price)}</p>
+                                                <p className="text-sm text-primary">{formatPrice(listing.price, listing.priceTo)}</p>
                                             </div>
                                         </div>
                                     </Link>

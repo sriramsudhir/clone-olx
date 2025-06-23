@@ -40,13 +40,17 @@ export default function ListingDetailPage() {
     );
   }
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
+  const formatPrice = (price: number, priceTo?: number) => {
+    const formatter = new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price);
+    });
+    if (priceTo && priceTo > price) {
+        return `${formatter.format(price)} - ${formatter.format(priceTo)}`;
+    }
+    return formatter.format(price);
   };
 
   return (
@@ -121,7 +125,7 @@ export default function ListingDetailPage() {
             <Card>
                 <CardContent className="p-6">
                     <h1 className="text-2xl md:text-3xl font-bold font-headline mb-2">{listing.title}</h1>
-                    <p className="text-3xl font-bold text-primary">{formatPrice(listing.price)}</p>
+                    <p className="text-3xl font-bold text-primary">{formatPrice(listing.price, listing.priceTo)}</p>
                     <div className="flex items-center text-sm text-muted-foreground mt-1">
                         <span>bisa nego</span>
                         <Info className="w-4 h-4 ml-2"/>

@@ -25,7 +25,7 @@ import {
 
 
 export const users: User[] = [
-  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100', phoneNumber: '081234567890', showPhoneNumber: false },
+  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100', phoneNumber: '081234567890', showPhoneNumber: true },
   { id: 'user-2', name: 'Budi Santoso', avatarUrl: 'https://placehold.co/100x100', phoneNumber: '089876543210', showPhoneNumber: true },
   { id: 'user-3', name: 'Charlie', avatarUrl: 'https://placehold.co/100x100' },
 ];
@@ -35,7 +35,8 @@ export const listings: Listing[] = [
     id: 'listing-piaggio',
     title: 'PIAGGIO VESPA MATIC SPRINT 150',
     description: "PIAGGIO VESPA MATIC SPRINT 150 3VIE 2014 BISA KREDIT.\n\nKondisi Like New\nWarna Putih Glossy\nMesin Halus Terawat\nBody Mulus\nPlat Letter BODO LOW\nSurat-Surat LENGKAP & TERJAMIN\nKunci Biru & Coklat (Master)\nCVT Halus Tidak Getar\nSemua Kelistrikan Berfungsi Normal\n\nSPECIAL PRICE......",
-    price: 38500000,
+    price: 38000000,
+    priceTo: 38500000,
     category: 'Motor',
     subCategory: 'scooter',
     location: 'Keboran Baru, Jakarta Selatan',
@@ -52,7 +53,8 @@ export const listings: Listing[] = [
     id: 'listing-z-fold',
     title: 'Samsung Galaxy Z Fold 5 512GB',
     description: 'A slightly used Samsung Galaxy Z Fold. Comes with original box and accessories. No scratches on screen. Perfect condition, used for 3 months.',
-    price: 19000000,
+    price: 18500000,
+    priceTo: 19000000,
     category: 'Elektronik',
     subCategory: 'smartphone',
     location: 'Cilandak, Jakarta Selatan',

@@ -9,13 +9,17 @@ import { Button } from "../ui/button";
 import { useSavedListings } from "@/hooks/use-saved-listings";
 import * as React from "react";
 
-const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
+const formatPrice = (price: number, priceTo?: number) => {
+    const formatter = new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price);
+    });
+    if (priceTo && priceTo > price) {
+        return `${formatter.format(price)} - ${formatter.format(priceTo)}`;
+    }
+    return formatter.format(price);
 };
 
 export default function ListingCard({ listing }: { listing: Listing }) {
@@ -54,7 +58,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
               <h3 className="font-semibold text-sm text-foreground/90 leading-tight group-hover:text-primary transition-colors truncate">{listing.title}</h3>
               <p className="text-xs text-muted-foreground mt-1 truncate">{listing.location}</p>
               <p className="font-bold text-base text-foreground mt-2">
-                {formatPrice(listing.price)}
+                {formatPrice(listing.price, listing.priceTo)}
               </p>
             </div>
           </div>

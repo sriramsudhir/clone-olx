@@ -13,13 +13,17 @@ import { useRouter } from 'next/navigation';
 
 const CURRENT_USER_ID = 'user-1';
 
-const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
+const formatPrice = (price: number, priceTo?: number) => {
+    const formatter = new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price);
+    });
+    if (priceTo && priceTo > price) {
+        return `${formatter.format(price)} - ${formatter.format(priceTo)}`;
+    }
+    return formatter.format(price);
 };
 
 export default function MessageView({ conversation }: { conversation: Conversation }) {
@@ -37,7 +41,7 @@ export default function MessageView({ conversation }: { conversation: Conversati
           </div>
           <div>
               <h3 className="font-semibold leading-tight group-hover:text-primary transition-colors">{conversation.listing.title}</h3>
-              <p className="text-sm text-primary font-bold">{formatPrice(conversation.listing.price)}</p>
+              <p className="text-sm text-primary font-bold">{formatPrice(conversation.listing.price, conversation.listing.priceTo)}</p>
           </div>
         </Link>
       </header>

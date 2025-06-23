@@ -35,8 +35,12 @@ const listingFormSchema = z.object({
   subCategory: z.string().optional(),
   description: z.string().min(20, "Description must be at least 20 characters."),
   price: z.coerce.number().min(1, "Price must be at least ₹1."),
+  priceTo: z.coerce.number().optional(),
   location: z.string().min(2, "Location is required."),
   images: z.any(),
+}).refine(data => !data.priceTo || data.priceTo > data.price, {
+    message: "Max price must be greater than min price.",
+    path: ["priceTo"],
 });
 
 type ListingFormValues = z.infer<typeof listingFormSchema>;
@@ -54,6 +58,7 @@ export default function CreateListingForm() {
       subCategory: "",
       description: "",
       price: 0,
+      priceTo: undefined,
       location: "",
     },
   });
@@ -264,22 +269,42 @@ export default function CreateListingForm() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabelWithIcon icon={CircleDollarSign}>Price</FormLabelWithIcon>
-                <FormControl>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">₹</span>
-                    <Input type="number" placeholder="100000" className="pl-8 font-semibold" {...field} />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="space-y-2">
+            <FormLabelWithIcon icon={CircleDollarSign}>Price Range</FormLabelWithIcon>
+            <div className="flex items-center gap-2">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">₹</span>
+                        <Input type="number" placeholder="From" className="pl-8 font-semibold" {...field} />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <span className="text-muted-foreground">-</span>
+              <FormField
+                control={form.control}
+                name="priceTo"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">₹</span>
+                        <Input type="number" placeholder="To (Optional)" className="pl-8 font-semibold" {...field} />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
           <FormField
             control={form.control}
             name="location"
