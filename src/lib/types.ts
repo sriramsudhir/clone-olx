@@ -32,7 +32,7 @@ export type Message = {
 
 export type Conversation = {
   id: string;
-  listing: Pick<Listing, 'id' | 'title' | 'images'>;
+  listing: Listing;
   participants: User[];
   messages: Message[];
 };

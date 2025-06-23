@@ -22,15 +22,15 @@ export default function SubCategoryNav({
     <Link
       href={`/listings?category=${currentCategorySlug}&subCategory=${sub.slug}`}
       className={cn(
-        "flex items-center gap-3 rounded-lg transition-colors",
-        mode === 'vertical' && 'p-3',
+        "flex items-center gap-3 rounded-lg transition-colors text-foreground/80",
+        "p-3",
         sub.slug === activeSubCategorySlug
           ? "bg-primary/10 text-primary font-semibold"
-          : "hover:bg-accent/50"
+          : "hover:bg-accent/50 hover:text-foreground"
       )}
       scroll={false}
     >
-      {sub.icon && <sub.icon className="h-5 w-5 shrink-0" />}
+      {sub.icon && <sub.icon className="h-5 w-5 shrink-0 text-primary/80" />}
       <span className="text-sm">{sub.name}</span>
     </Link>
   );
@@ -38,9 +38,9 @@ export default function SubCategoryNav({
   const HorizontalNavItem = ({ sub }: { sub: SubCategory }) => (
      <Button
         asChild
-        variant={sub.slug === activeSubCategorySlug ? "default" : "outline"}
+        variant={sub.slug === activeSubCategorySlug ? "default" : "secondary"}
         size="sm"
-        className="shrink-0 rounded-full"
+        className="shrink-0 rounded-lg"
     >
         <Link
             href={`/listings?category=${currentCategorySlug}&subCategory=${sub.slug}`}
@@ -55,7 +55,7 @@ export default function SubCategoryNav({
 
   if (mode === "horizontal") {
     return (
-      <ScrollArea className="w-full whitespace-nowrap py-2">
+      <ScrollArea className="w-full whitespace-nowrap py-2 border-b md:border-none">
         <div className="flex w-max space-x-2 px-4">
           {subCategories.map((sub) => (
             <HorizontalNavItem key={sub.slug} sub={sub} />
@@ -67,7 +67,7 @@ export default function SubCategoryNav({
   }
 
   return (
-    <nav className="flex flex-col space-y-1">
+    <nav className="flex flex-col space-y-1 pr-2">
       {subCategories.map((sub) => (
         <NavItem key={sub.slug} sub={sub} />
       ))}

@@ -12,7 +12,15 @@ import {
   Smartphone,
   Laptop,
   Headphones,
-  Component
+  Component,
+  Tv,
+  Camera,
+  BookOpen,
+  Baby,
+  ToyBrick,
+  Bed,
+  Lamp,
+  Wrench
 } from 'lucide-react';
 
 
@@ -44,8 +52,8 @@ export const listings: Listing[] = [
     title: 'Samsung Galaxy Z Fold 5 512GB',
     description: 'A slightly used Samsung Galaxy Z Fold. Comes with original box and accessories. No scratches on screen. Perfect condition, used for 3 months.',
     price: 19000000,
-    category: 'Gadget',
-    subCategory: 'phones',
+    category: 'Elektronik',
+    subCategory: 'smartphone',
     location: 'Cilandak, Jakarta Selatan',
     images: ['https://placehold.co/800x600', 'https://placehold.co/800x600'],
     seller: users[0],
@@ -106,8 +114,8 @@ export const listings: Listing[] = [
     title: 'Macbook Pro M1 13-inch 2021',
     description: '13-inch laptop, great for students or professionals. Wiped and ready for a new owner. Comes with charger. Cycle count low.',
     price: 16000000,
-    category: 'Gadget',
-    subCategory: 'laptops',
+    category: 'Elektronik',
+    subCategory: 'laptop',
     location: 'Palo Alto, CA',
     images: ['https://placehold.co/800x600', 'https://placehold.co/800x600'],
     seller: users[2],
@@ -121,7 +129,7 @@ export const listings: Listing[] = [
 export const conversations: Conversation[] = [
   {
     id: 'convo-1',
-    listing: { id: 'listing-piaggio', title: 'PIAGGIO VESPA MATIC SPRINT 150', images: listings[0].images },
+    listing: listings[0],
     participants: [users[1], users[0]],
     messages: [
       { id: 'msg-1-1', text: 'Hi, is this scooter still available?', senderId: 'user-1', timestamp: '2024-07-22T14:00:00Z' },
@@ -130,7 +138,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: 'convo-2',
-    listing: { id: 'listing-bmw-x1', title: 'Bmw X1 (2014)', images: listings[1].images },
+    listing: listings[1],
     participants: [users[2], users[1]],
     messages: [
       { id: 'msg-2-1', text: 'Hey, I\'m interested in the car. Can we negotiate the price?', senderId: 'user-2', timestamp: '2024-07-22T10:00:00Z' },
@@ -156,6 +164,17 @@ export const categories: Category[] = [
       ]
     },
     { 
+      name: 'Motor', 
+      slug: 'motor', 
+      icon: Bike,
+      subCategories: [
+        { name: 'All Motors', slug: 'all', icon: Bike },
+        { name: 'Scooter', slug: 'scooter', icon: Bike },
+        { name: 'Sport', slug: 'sport', icon: Bike },
+        { name: 'Moped', slug: 'moped', icon: Bike },
+      ]
+    },
+     { 
       name: 'Properti', 
       slug: 'properti', 
       icon: Building2,
@@ -167,39 +186,68 @@ export const categories: Category[] = [
       ]
     },
     { 
-      name: 'Motor', 
-      slug: 'motor', 
-      icon: Bike,
-      subCategories: [
-        { name: 'All Motors', slug: 'all', icon: Bike },
-        { name: 'Scooter', slug: 'scooter', icon: Bike },
-        { name: 'Sport', slug: 'sport', icon: Bike },
-        { name: 'Moped', slug: 'moped', icon: Bike },
-      ]
-    },
-    { name: 'Jasa & Loker', slug: 'jasa-loker', icon: Briefcase },
-    { 
-      name: 'Gadget', 
-      slug: 'gadget', 
+      name: 'Elektronik', 
+      slug: 'elektronik', 
       icon: MonitorSmartphone,
       subCategories: [
-        { name: 'All Gadgets', slug: 'all', icon: MonitorSmartphone },
-        { name: 'Phones', slug: 'phones', icon: Smartphone },
-        { name: 'Laptops', slug: 'laptops', icon: Laptop },
-        { name: 'Accessories', slug: 'accessories', icon: Headphones },
+        { name: 'All Electronics', slug: 'all', icon: MonitorSmartphone },
+        { name: 'Smartphone', slug: 'smartphone', icon: Smartphone },
+        { name: 'Laptop', slug: 'laptop', icon: Laptop },
+        { name: 'Aksesoris', slug: 'aksesoris', icon: Headphones },
+        { name: 'TV & Audio', slug: 'tv-audio', icon: Tv },
+        { name: 'Kamera', slug: 'kamera', icon: Camera },
       ]
     },
-    { name: 'Olahraga', slug: 'olahraga', icon: Guitar },
-    { name: 'Rumah Tangga', slug: 'rumah-tangga', icon: Sofa },
     { 
-        name: 'Pribadi', 
-        slug: 'pribadi', 
+        name: 'Fashion', 
+        slug: 'fashion', 
         icon: Shirt,
         subCategories: [
-            { name: 'All Items', slug: 'all', icon: Shirt },
-            { name: 'Fashion', slug: 'fashion', icon: Shirt },
-            { name: 'Hobbies', slug: 'hobbies', icon: Component },
+            { name: 'All Fashion', slug: 'all', icon: Shirt },
+            { name: 'Pakaian Pria', slug: 'pakaian-pria', icon: Shirt },
+            { name: 'Pakaian Wanita', slug: 'pakaian-wanita', icon: Shirt },
+            { name: 'Aksesoris Fashion', slug: 'aksesoris-fashion', icon: Component },
         ]
+    },
+    { 
+      name: 'Rumah Tangga', 
+      slug: 'rumah-tangga', 
+      icon: Sofa,
+      subCategories: [
+          { name: 'All Home Goods', slug: 'all', icon: Sofa },
+          { name: 'Furniture', slug: 'furniture', icon: Bed },
+          { name: 'Dekorasi', slug: 'dekorasi', icon: Lamp },
+      ]
+    },
+    { 
+      name: 'Hobi & Hiburan', 
+      slug: 'hobi', 
+      icon: Guitar,
+      subCategories: [
+          { name: 'All Hobbies', slug: 'all', icon: Guitar },
+          { name: 'Buku & Majalah', slug: 'buku', icon: BookOpen },
+          { name: 'Musik & Film', slug: 'musik-film', icon: Guitar },
+      ]
+    },
+     { 
+      name: 'Anak & Bayi', 
+      slug: 'anak-bayi', 
+      icon: Baby,
+      subCategories: [
+          { name: 'All Kids', slug: 'all', icon: Baby },
+          { name: 'Mainan', slug: 'mainan', icon: ToyBrick },
+          { name: 'Fashion Anak', slug: 'fashion-anak', icon: Shirt },
+      ]
+    },
+    { 
+      name: 'Jasa & Loker', 
+      slug: 'jasa-loker', 
+      icon: Briefcase,
+       subCategories: [
+          { name: 'All Services', slug: 'all', icon: Briefcase },
+          { name: 'Lowongan Kerja', slug: 'lowongan-kerja', icon: Briefcase },
+          { name: 'Jasa', slug: 'jasa', icon: Wrench },
+      ]
     },
 ];
 

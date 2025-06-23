@@ -30,26 +30,26 @@ export default function ConversationList({
   }, []);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-background">
       <div className="p-4 border-b">
-        <h2 className="text-2xl font-bold font-headline">Messages</h2>
-        <div className="relative mt-2">
+        <h2 className="text-xl font-bold font-headline">Messages</h2>
+        <div className="relative mt-4">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"/>
-            <Input placeholder="Search messages..." className="pl-10"/>
+            <Input placeholder="Search messages..." className="pl-10 rounded-full bg-secondary"/>
         </div>
       </div>
       <ScrollArea className="flex-1">
-        <div className="p-2">
+        <div className="p-2 space-y-1">
         {conversations.map((convo) => {
             const otherUser = getOtherParticipant(convo.participants);
             const lastMessage = convo.messages[convo.messages.length - 1];
 
             return (
-          <Link href={`/messages?conversationId=${convo.id}`} key={convo.id}>
+          <Link href={`/messages?conversationId=${convo.id}`} key={convo.id} className="block">
             <div
               className={cn(
-                'flex items-start p-3 rounded-lg hover:bg-accent/50 cursor-pointer transition-colors',
-                convo.id === activeConversationId && 'bg-accent'
+                'flex items-start p-3 rounded-lg hover:bg-accent cursor-pointer transition-colors',
+                convo.id === activeConversationId && 'bg-primary/10'
               )}
             >
               <Avatar className="h-12 w-12 mr-4">
@@ -59,12 +59,12 @@ export default function ConversationList({
               <div className="flex-1 overflow-hidden">
                 <div className="flex justify-between items-center">
                   <h3 className="font-semibold truncate">{otherUser?.name}</h3>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground shrink-0 pl-2">
                     {isClient ? new Date(lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null}
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground truncate">{convo.listing.title}</p>
-                <p className="text-sm text-muted-foreground truncate">{lastMessage.text}</p>
+                <p className="text-sm text-foreground/90 truncate">{lastMessage.text}</p>
               </div>
             </div>
           </Link>
