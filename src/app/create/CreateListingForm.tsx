@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { categories } from "@/lib/data";
-import { LocateFixed, UploadCloud, X } from "lucide-react";
+import { LocateFixed, UploadCloud, X, CaseSensitive, Tag, AlignLeft, CircleDollarSign, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import type { SubCategory } from "@/lib/types";
@@ -89,13 +90,26 @@ export default function CreateListingForm() {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const files = Array.from(event.target.files);
+      const currentImageCount = imagePreviews.length;
+      if (currentImageCount + files.length > 5) {
+        toast({
+          variant: "destructive",
+          title: "Maximum images reached",
+          description: "You can only upload up to 5 images.",
+        });
+        return;
+      }
       const newPreviews = files.map(file => URL.createObjectURL(file));
-      setImagePreviews(prev => [...prev, ...newPreviews].slice(0, 5));
+      setImagePreviews(prev => [...prev, ...newPreviews]);
     }
+  };
+
+  const removeImage = (indexToRemove: number) => {
+    setImagePreviews(previews => previews.filter((_, index) => index !== indexToRemove));
   };
   
   function onSubmit(data: ListingFormValues) {
-    console.log(data);
+    console.log({ ...data, images: imagePreviews });
     toast({
       title: "Listing Submitted!",
       description: "Your item is now live.",
@@ -104,17 +118,74 @@ export default function CreateListingForm() {
     setImagePreviews([]);
   }
 
+  const FormLabelWithIcon = ({ icon, children }: { icon: React.ElementType, children: React.ReactNode }) => {
+    const Icon = icon;
+    return (
+      <FormLabel className="flex items-center gap-2">
+        <Icon className="h-4 w-4 text-muted-foreground" />
+        <span>{children}</span>
+      </FormLabel>
+    );
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        
+        <FormField
+          control={form.control}
+          name="images"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabelWithIcon icon={UploadCloud}>Photos</FormLabelWithIcon>
+              <FormDescription>Add up to 5 photos. The first one will be the main photo.</FormDescription>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
+                {imagePreviews.map((src, index) => (
+                  <div key={index} className="relative aspect-square">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={src} alt={`Preview ${index}`} className="w-full h-full object-cover rounded-md border" />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      className="absolute -top-2 -right-2 h-6 w-6 rounded-full shadow-md"
+                      onClick={() => removeImage(index)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+                {imagePreviews.length < 5 && (
+                   <FormControl>
+                     <div className="aspect-square relative border-2 border-dashed border-muted rounded-lg flex items-center justify-center text-center hover:border-primary transition-colors cursor-pointer">
+                        <div className="flex flex-col items-center text-muted-foreground">
+                            <UploadCloud className="h-8 w-8" />
+                            <span className="text-xs mt-2">Upload</span>
+                        </div>
+                        <Input
+                            type="file"
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            accept="image/*"
+                            multiple
+                            onChange={handleImageChange}
+                        />
+                    </div>
+                  </FormControl>
+                )}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabelWithIcon icon={CaseSensitive}>Title</FormLabelWithIcon>
               <FormControl>
-                <Input placeholder="e.g., Vintage Leather Sofa" {...field} />
+                <Input placeholder="e.g., Vintage Leather Sofa, well-maintained" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -127,7 +198,7 @@ export default function CreateListingForm() {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Category</FormLabel>
+                <FormLabelWithIcon icon={Tag}>Category</FormLabelWithIcon>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
@@ -153,7 +224,7 @@ export default function CreateListingForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Sub-Category</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value || ''}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a sub-category" />
@@ -179,10 +250,10 @@ export default function CreateListingForm() {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabelWithIcon icon={AlignLeft}>Description</FormLabelWithIcon>
               <FormControl>
                 <Textarea
-                  placeholder="Describe your item in detail..."
+                  placeholder="Describe your item in detail, including its condition, features, and any flaws."
                   rows={6}
                   {...field}
                 />
@@ -198,11 +269,11 @@ export default function CreateListingForm() {
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Price</FormLabel>
+                <FormLabelWithIcon icon={CircleDollarSign}>Price</FormLabelWithIcon>
                 <FormControl>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
-                    <Input type="number" placeholder="100000" className="pl-8" {...field} />
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">Rp</span>
+                    <Input type="number" placeholder="100000" className="pl-9 font-semibold" {...field} />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -214,7 +285,7 @@ export default function CreateListingForm() {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Location</FormLabel>
+                <FormLabelWithIcon icon={MapPin}>Location</FormLabelWithIcon>
                 <div className="flex gap-2">
                   <FormControl>
                     <Input placeholder="e.g., San Francisco, CA" {...field} />
@@ -228,52 +299,6 @@ export default function CreateListingForm() {
             )}
           />
         </div>
-
-        <FormField
-          control={form.control}
-          name="images"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Photos</FormLabel>
-              <FormControl>
-                 <div className="relative border-2 border-dashed border-muted-foreground/50 rounded-lg p-8 text-center hover:border-primary transition-colors">
-                    <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" />
-                    <p className="mt-4 text-sm text-muted-foreground">Drag & drop files here, or click to browse</p>
-                    <p className="text-xs text-muted-foreground/70">Max 5 images</p>
-                    <Input
-                        type="file"
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        accept="image/*"
-                        multiple
-                        onChange={handleImageChange}
-                        disabled={imagePreviews.length >= 5}
-                    />
-                </div>
-              </FormControl>
-              {imagePreviews.length > 0 && (
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-4 mt-4">
-                  {imagePreviews.map((src, index) => (
-                    <div key={index} className="relative aspect-square">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={src} alt={`Preview ${index}`} className="w-full h-full object-cover rounded-md" />
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="icon"
-                        className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
-                        onClick={() => setImagePreviews(previews => previews.filter((_, i) => i !== index))}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
 
         <Button type="submit" size="lg" className="w-full md:w-auto">
           Post Listing
