@@ -72,7 +72,7 @@ export default function CreateListingForm() {
     if (result.success && result.data) {
       form.setValue("title", result.data.improvedTitle, { shouldValidate: true });
       form.setValue("description", result.data.improvedDescription, { shouldValidate: true });
-      if (categories.includes(result.data.suggestedCategory)) {
+      if (categories.map(c => c.name).includes(result.data.suggestedCategory)) {
         form.setValue("category", result.data.suggestedCategory, { shouldValidate: true });
       }
       toast({ title: "Listing improved with AI!" });
@@ -154,8 +154,8 @@ export default function CreateListingForm() {
                   </FormControl>
                   <SelectContent>
                     {categories.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat}
+                      <SelectItem key={cat.slug} value={cat.name}>
+                        {cat.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

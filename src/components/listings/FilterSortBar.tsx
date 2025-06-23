@@ -13,22 +13,33 @@ import {
 import { SlidersHorizontal } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 
 export default function FilterSortBar() {
+  const router = useRouter();
+
+  const handleCategoryChange = (slug: string) => {
+    if (slug === 'all') {
+      router.push('/listings');
+    } else {
+      router.push(`/listings?category=${slug}`);
+    }
+  };
+
   return (
     <div className="bg-card rounded-lg shadow-sm">
       <div className="p-4 border-b">
         {/* Main filters visible on all screens */}
         <div className="flex flex-col md:flex-row gap-4">
-          <Select>
+          <Select onValueChange={handleCategoryChange}>
             <SelectTrigger>
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
               {categories.map((cat) => (
-                <SelectItem key={cat} value={cat.toLowerCase().replace(' ', '-')}>
-                  {cat}
+                <SelectItem key={cat.slug} value={cat.slug}>
+                  {cat.name}
                 </SelectItem>
               ))}
             </SelectContent>
