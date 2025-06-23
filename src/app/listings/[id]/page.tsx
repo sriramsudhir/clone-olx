@@ -11,7 +11,6 @@ import ListingGrid from '@/components/listings/ListingGrid';
 import { notFound } from 'next/navigation';
 import ImageGallery from './ImageGallery';
 import BackButton from '@/components/layout/BackButton';
-import ListingMap from './ListingMap';
 
 type ListingDetailPageProps = {
   params: { id: string };
@@ -41,9 +40,6 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
     return formatter.format(price);
   };
   
-  // Dummy coordinates for now. In a real app, you'd get this from a geocoding service.
-  const mapPosition: [number, number] = [-6.2088, 106.8456]; 
-
   return (
     <div>
       <div className="flex items-center mb-4">
@@ -131,7 +127,7 @@ export default function ListingDetailPage({ params }: ListingDetailPageProps) {
                         <span>{listing.location}</span>
                     </div>
                     <div className="aspect-video w-full rounded-md overflow-hidden bg-muted">
-                        <ListingMap position={mapPosition} popupText={listing.location} />
+                        {/* Map placeholder */}
                     </div>
                 </CardContent>
             </Card>
