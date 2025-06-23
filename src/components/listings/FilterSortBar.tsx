@@ -11,45 +11,74 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SlidersHorizontal } from "lucide-react";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
+import { Label } from "@/components/ui/label";
 
 export default function FilterSortBar() {
   return (
-    <div className="flex flex-col md:flex-row gap-4 items-center p-4 bg-card rounded-lg shadow-sm">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:flex-row md:flex-1 gap-4 w-full">
-         <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {categories.map((cat) => (
-              <SelectItem key={cat} value={cat.toLowerCase().replace(' ', '-')}>
-                {cat}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Input placeholder="Location (e.g., San Francisco)" />
-        <div className="flex gap-2">
-            <Input type="number" placeholder="Min price" />
-            <Input type="number" placeholder="Max price" />
+    <div className="bg-card rounded-lg shadow-sm">
+      <div className="p-4 border-b">
+        {/* Main filters visible on all screens */}
+        <div className="flex flex-col md:flex-row gap-4">
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat.toLowerCase().replace(' ', '-')}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Sort by: Newest" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="newest">Sort by: Newest</SelectItem>
+              <SelectItem value="price-asc">Price: Low to High</SelectItem>
+              <SelectItem value="price-desc">Price: High to Low</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
-      <div className="flex gap-4 w-full md:w-auto">
-        <Select>
-          <SelectTrigger className="w-full md:w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="newest">Newest</SelectItem>
-            <SelectItem value="price-asc">Price: Low to High</SelectItem>
-            <SelectItem value="price-desc">Price: High to Low</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button variant="ghost" size="icon" className="hidden md:inline-flex">
-          <SlidersHorizontal className="h-5 w-5" />
-          <span className="sr-only">More filters</span>
-        </Button>
+      
+      {/* Additional filters trigger */}
+      <div className="p-4">
+        <Sheet>
+            <SheetTrigger asChild>
+                <Button variant="outline" className="w-full justify-start text-muted-foreground">
+                    <SlidersHorizontal className="h-4 w-4 mr-2" />
+                    Location, price, and more filters...
+                </Button>
+            </SheetTrigger>
+            <SheetContent>
+                <SheetHeader>
+                    <SheetTitle>Filters</SheetTitle>
+                </SheetHeader>
+                <div className="grid gap-6 py-6">
+                    <div className="grid gap-3">
+                        <Label htmlFor="location">Location</Label>
+                        <Input id="location" placeholder="e.g., San Francisco" />
+                    </div>
+                    <div className="grid gap-3">
+                        <Label>Price Range</Label>
+                        <div className="flex items-center gap-2">
+                            <Input type="number" placeholder="Min" />
+                            <span>-</span>
+                            <Input type="number" placeholder="Max" />
+                        </div>
+                    </div>
+                </div>
+                <SheetFooter>
+                    <Button type="button" variant="outline" className="w-full">Clear</Button>
+                    <Button type="submit" className="w-full">Apply Filters</Button>
+                </SheetFooter>
+            </SheetContent>
+        </Sheet>
       </div>
     </div>
   );
