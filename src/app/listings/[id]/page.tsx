@@ -1,3 +1,4 @@
+
 "use client"
 import { getListingById, listings } from '@/lib/data';
 import Image from 'next/image';
@@ -56,10 +57,10 @@ export default function ListingDetailPage() {
   return (
     <div>
       <div className="flex items-center mb-4">
-        <Button variant="ghost" size="icon" onClick={() => router.back()} className="mr-2 rounded-full hidden md:flex">
+        <Button variant="ghost" size="icon" onClick={() => router.back()} className="mr-2 rounded-full">
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <span className="text-sm text-muted-foreground">Back to results</span>
+        <span className="text-sm text-muted-foreground hidden sm:block">Back to results</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
