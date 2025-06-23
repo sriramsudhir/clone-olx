@@ -1,45 +1,31 @@
 
-"use client"
 import { getListingById, listings } from '@/lib/data';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Heart, Share2, ArrowLeft, Info, Star, MessageSquare, MapPin, Phone } from 'lucide-react';
+import { Info, MessageSquare, MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter, useParams } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
 import ListingGrid from '@/components/listings/ListingGrid';
+import { notFound } from 'next/navigation';
+import ImageGallery from './ImageGallery';
+import BackButton from '@/components/layout/BackButton';
 
-export default function ListingDetailPage() {
-  const router = useRouter();
-  const params = useParams();
-  const listing = getListingById(params.id as string);
-  const [selectedImage, setSelectedImage] = useState(0);
+type ListingDetailPageProps = {
+  params: { id: string };
+};
 
-  const suggestedListings = listing
-    ? listings
-        .filter((l) => l.category === listing.category && l.id !== listing.id)
-        .slice(0, 4)
-    : [];
+export default function ListingDetailPage({ params }: ListingDetailPageProps) {
+  const listing = getListingById(params.id);
 
   if (!listing) {
-    return (
-        <div className="p-4">
-            <header className="flex items-center mb-4">
-                <Button variant="ghost" size="icon" onClick={() => router.back()} className="mr-2 rounded-full">
-                    <ArrowLeft className="w-6 h-6" />
-                </Button>
-                <h1 className="text-lg font-bold font-headline">Listing Not Found</h1>
-            </header>
-            <div className="text-center py-20">
-                <p>Sorry, we couldn't find the listing you're looking for.</p>
-            </div>
-        </div>
-    );
+    notFound();
   }
+
+  const suggestedListings = listings
+    .filter((l) => l.category === listing.category && l.id !== listing.id)
+    .slice(0, 4);
 
   const formatPrice = (price: number, priceTo?: number) => {
     const formatter = new Intl.NumberFormat('en-IN', {
@@ -57,52 +43,14 @@ export default function ListingDetailPage() {
   return (
     <div>
       <div className="flex items-center mb-4">
-        <Button variant="ghost" size="icon" onClick={() => router.back()} className="mr-2 rounded-full">
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
+        <BackButton className="mr-2 rounded-full" />
         <span className="text-sm text-muted-foreground hidden sm:block">Back to results</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Image Gallery */}
         <div className="lg:col-span-2">
-            <Card>
-                <CardContent className="p-4">
-                    <div className="relative">
-                        <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4">
-                            <Image
-                                src={listing.images[selectedImage]}
-                                alt={listing.title}
-                                layout="fill"
-                                objectFit="cover"
-                                className="bg-muted"
-                                data-ai-hint="product image"
-                            />
-                             <div className="absolute top-4 right-4 z-10 flex gap-2">
-                                <Button variant="secondary" size="icon" className="rounded-full bg-black/30 hover:bg-black/50 text-white">
-                                    <Share2 className="w-5 h-5" />
-                                </Button>
-                                <Button variant="secondary" size="icon" className="rounded-full bg-black/30 hover:bg-black/50 text-white">
-                                    <Heart className="w-5 h-5" />
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-5 gap-2">
-                            {listing.images.map((img, index) => (
-                                <button key={index} onClick={() => setSelectedImage(index)} className={cn("aspect-square relative rounded-md overflow-hidden transition-all", selectedImage === index ? 'ring-2 ring-primary ring-offset-2' : 'opacity-70 hover:opacity-100')}>
-                                     <Image
-                                        src={img}
-                                        alt={`${listing.title} thumbnail ${index + 1}`}
-                                        layout="fill"
-                                        objectFit="cover"
-                                        className="bg-muted"
-                                     />
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            <ImageGallery listing={listing} />
             <Card className="mt-6">
                 <CardHeader>
                     <CardTitle>Description</CardTitle>
