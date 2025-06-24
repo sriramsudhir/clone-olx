@@ -48,7 +48,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="rounded-full">
+          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => window.location.reload()}>
             <RefreshCw className="w-6 h-6" />
           </Button>
         </div>
