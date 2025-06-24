@@ -10,16 +10,14 @@ import { useSavedListings } from "@/hooks/use-saved-listings";
 import * as React from "react";
 
 const formatPrice = (price: number, priceTo?: number) => {
-    const formatter = new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-    if (priceTo && priceTo > price) {
-        return `${formatter.format(price)} - ${formatter.format(priceTo)}`;
+    const formatNumber = (num: number) => {
+        return 'Rp' + new Intl.NumberFormat('id-ID').format(num);
     }
-    return formatter.format(price);
+
+    if (priceTo && priceTo > price) {
+        return `${formatNumber(price)} - ${formatNumber(priceTo)}`;
+    }
+    return formatNumber(price);
 };
 
 export default function ListingCard({ listing }: { listing: Listing }) {

@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bell, Search, MapPin, ChevronDown } from 'lucide-react';
+import { RefreshCw, Search, MapPin, ChevronDown } from 'lucide-react';
 import ListingGrid from '@/components/listings/ListingGrid';
 import { listings, users, categories as categoryData, banners } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -49,7 +49,7 @@ export default function HomePage() {
             </div>
           </div>
           <Button variant="ghost" size="icon" className="rounded-full">
-            <Bell className="w-6 h-6" />
+            <RefreshCw className="w-6 h-6" />
           </Button>
         </div>
         <GlobalSearch />
