@@ -35,7 +35,7 @@ const listingFormSchema = z.object({
   category: z.string().min(1, "Please select a category."),
   subCategory: z.string().optional(),
   description: z.string().min(20, "Description must be at least 20 characters."),
-  price: z.coerce.number().min(1, "Price must be at least Rp1."),
+  price: z.coerce.number().min(1, "Price must be at least ₹1."),
   priceTo: z.coerce.number().optional(),
   images: z.any(),
   location: z.string().min(2, "Location is required."),
@@ -298,8 +298,8 @@ export default function CreateListingForm({ initialData }: { initialData?: Listi
                   <FormItem className="flex-1">
                     <FormControl>
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">Rp</span>
-                        <Input type="number" placeholder="From" className="pl-8 font-semibold" {...field} value={field.value ?? ''} />
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">₹</span>
+                        <Input type="number" placeholder="From" className="pl-7 font-semibold" {...field} value={field.value ?? ''} />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -314,8 +314,8 @@ export default function CreateListingForm({ initialData }: { initialData?: Listi
                   <FormItem className="flex-1">
                     <FormControl>
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">Rp</span>
-                        <Input type="number" placeholder="To (Optional)" className="pl-8 font-semibold" {...field} value={field.value ?? ''} />
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">₹</span>
+                        <Input type="number" placeholder="To (Optional)" className="pl-7 font-semibold" {...field} value={field.value ?? ''} />
                       </div>
                     </FormControl>
                     <FormMessage />

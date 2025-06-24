@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 
 const formatPrice = (price: number, priceTo?: number) => {
     const formatNumber = (num: number) => {
-        return 'Rp' + new Intl.NumberFormat('id-ID').format(num);
+        return '₹' + new Intl.NumberFormat('en-IN').format(num);
     }
     if (priceTo && priceTo > price) {
         return `${formatNumber(price)} - ${formatNumber(priceTo)}`;
