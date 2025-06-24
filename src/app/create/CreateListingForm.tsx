@@ -27,7 +27,7 @@ import { categories } from "@/lib/data";
 import { LocateFixed, UploadCloud, X, CaseSensitive, Tag, AlignLeft, CircleDollarSign, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
-import type { SubCategory } from "@/lib/types";
+import type { SubCategory, Listing } from "@/lib/types";
 
 const listingFormSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -45,21 +45,29 @@ const listingFormSchema = z.object({
 
 type ListingFormValues = z.infer<typeof listingFormSchema>;
 
-export default function CreateListingForm() {
+export default function CreateListingForm({ initialData }: { initialData?: Listing }) {
   const { toast } = useToast();
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>(initialData?.images || []);
+
+  const [subCategories, setSubCategories] = useState<SubCategory[]>(() => {
+    if (initialData?.category) {
+      const categoryData = categories.find(c => c.name === initialData.category);
+      return categoryData?.subCategories?.filter(sc => sc.slug !== 'all') || [];
+    }
+    return [];
+  });
 
   const form = useForm<ListingFormValues>({
     resolver: zodResolver(listingFormSchema),
     defaultValues: {
-      title: "",
-      category: "",
-      subCategory: "",
-      description: "",
-      price: undefined,
-      priceTo: undefined,
-      location: "",
+      title: initialData?.title || "",
+      category: initialData?.category || "",
+      subCategory: initialData?.subCategory || "",
+      description: initialData?.description || "",
+      price: initialData?.price ?? undefined,
+      priceTo: initialData?.priceTo ?? undefined,
+      location: initialData?.location || "",
+      images: initialData?.images || undefined,
     },
   });
 
@@ -70,7 +78,11 @@ export default function CreateListingForm() {
       const categoryData = categories.find(c => c.name === selectedCategoryName);
       const subs = categoryData?.subCategories?.filter(sc => sc.slug !== 'all') || [];
       setSubCategories(subs);
-      form.setValue('subCategory', ''); 
+      
+      const currentSubCategory = form.getValues('subCategory');
+      if (currentSubCategory && !subs.some(s => s.name === currentSubCategory)) {
+        form.setValue('subCategory', '');
+      }
     } else {
       setSubCategories([]);
     }
@@ -116,11 +128,13 @@ export default function CreateListingForm() {
   function onSubmit(data: ListingFormValues) {
     console.log({ ...data, images: imagePreviews });
     toast({
-      title: "Listing Submitted!",
-      description: "Your item is now live.",
+      title: initialData ? "Listing Updated!" : "Listing Submitted!",
+      description: initialData ? "Your changes are now live." : "Your item is now live.",
     });
-    form.reset();
-    setImagePreviews([]);
+    if (!initialData) {
+        form.reset();
+        setImagePreviews([]);
+    }
   }
 
   const FormLabelWithIcon = ({ icon, children }: { icon: React.ElementType, children: React.ReactNode }) => {
@@ -326,7 +340,7 @@ export default function CreateListingForm() {
         </div>
 
         <Button type="submit" size="lg" className="w-full md:w-auto">
-          Post Listing
+          {initialData ? 'Save Changes' : 'Post Listing'}
         </Button>
       </form>
     </Form>

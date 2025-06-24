@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Package } from 'lucide-react';
+import { Package, Pencil } from 'lucide-react';
 import { users, listings } from "@/lib/data";
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ListingCard from "@/components/listings/ListingCard";
 import ListingGrid from "@/components/listings/ListingGrid";
 import ProfileSettings from "./ProfileSettings";
 
@@ -45,8 +46,20 @@ export default function ProfilePage({ searchParams }: { searchParams: { tab: str
               </TabsList>
             </div>
             <TabsContent value="listings" className="mt-6">
-                <ListingGrid listings={myListings} />
-                {myListings.length === 0 && (
+                {myListings.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+                        {myListings.map((listing) => (
+                            <div key={listing.id} className="relative group/edit">
+                                <ListingCard listing={listing} />
+                                <Button asChild size="icon" className="absolute top-12 right-2 h-8 w-8 z-20 opacity-0 group-hover/edit:opacity-100 transition-opacity bg-background hover:bg-secondary rounded-full shadow-md">
+                                    <Link href={`/listings/${listing.id}/edit`}>
+                                        <Pencil className="h-4 w-4 text-foreground" />
+                                    </Link>
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
                     <div className="text-center py-12">
                         <Package className="mx-auto h-12 w-12 text-muted-foreground" />
                         <h3 className="mt-4 text-lg font-medium">No listings yet</h3>
