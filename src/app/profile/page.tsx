@@ -40,9 +40,9 @@ export default function ProfilePage({ searchParams }: { searchParams: { tab: str
           <Tabs defaultValue={activeTab} className="w-full">
             <div className="border-b">
               <TabsList className="bg-transparent p-0 -mb-px">
-                <TabsTrigger value="listings" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">My Listings</TabsTrigger>
-                <TabsTrigger value="saved" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">Saved</TabsTrigger>
-                <TabsTrigger value="settings" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">Settings</TabsTrigger>
+                <TabsTrigger value="listings" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">My Listing Ads</TabsTrigger>
+                <TabsTrigger value="saved" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">My Favorite</TabsTrigger>
+                <TabsTrigger value="settings" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">Setting</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="listings" className="mt-6">
@@ -51,7 +51,7 @@ export default function ProfilePage({ searchParams }: { searchParams: { tab: str
                         {myListings.map((listing) => (
                             <div key={listing.id} className="relative group/edit">
                                 <ListingCard listing={listing} />
-                                <Button asChild size="icon" className="absolute top-12 right-2 h-8 w-8 z-20 opacity-0 group-hover/edit:opacity-100 transition-opacity bg-background hover:bg-secondary rounded-full shadow-md">
+                                <Button asChild size="icon" className="absolute top-12 right-2 h-8 w-8 z-20 transition-opacity bg-background hover:bg-secondary rounded-full shadow-md">
                                     <Link href={`/listings/${listing.id}/edit`}>
                                         <Pencil className="h-4 w-4 text-foreground" />
                                     </Link>

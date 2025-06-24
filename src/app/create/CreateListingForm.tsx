@@ -28,6 +28,7 @@ import { LocateFixed, UploadCloud, X, CaseSensitive, Tag, AlignLeft, CircleDolla
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import type { SubCategory, Listing } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 const listingFormSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -47,6 +48,7 @@ type ListingFormValues = z.infer<typeof listingFormSchema>;
 
 export default function CreateListingForm({ initialData }: { initialData?: Listing }) {
   const { toast } = useToast();
+  const router = useRouter();
   const [imagePreviews, setImagePreviews] = useState<string[]>(initialData?.images || []);
 
   const [subCategories, setSubCategories] = useState<SubCategory[]>(() => {
@@ -131,9 +133,12 @@ export default function CreateListingForm({ initialData }: { initialData?: Listi
       title: initialData ? "Listing Updated!" : "Listing Submitted!",
       description: initialData ? "Your changes are now live." : "Your item is now live.",
     });
-    if (!initialData) {
+    if (initialData) {
+      router.push(`/listings/${initialData.id}`);
+    } else {
         form.reset();
         setImagePreviews([]);
+        router.push('/profile');
     }
   }
 
