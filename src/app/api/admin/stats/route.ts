@@ -17,5 +17,12 @@ export async function GET() {
     totalRevenue,
   };
 
-  return NextResponse.json({ stats, recentListings });
+  const categoryCounts = listings.reduce((acc: Record<string, number>, listing) => {
+    acc[listing.category] = (acc[listing.category] || 0) + 1;
+    return acc;
+  }, {});
+
+  const categoryChartData = Object.entries(categoryCounts).map(([name, value]) => ({ name, value }));
+
+  return NextResponse.json({ stats, recentListings, categoryChartData });
 }
