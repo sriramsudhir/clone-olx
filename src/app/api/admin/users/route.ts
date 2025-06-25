@@ -1,12 +1,22 @@
 
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { users } from '@/lib/data';
+import type { User } from '@/lib/types';
 
 // In-memory data store for demonstration
-let usersData = [...users];
+let usersData: User[] = [...users];
 
-export async function GET() {
-  return NextResponse.json(usersData);
+export async function GET(request: NextRequest) {
+  const search = request.nextUrl.searchParams.get('search');
+  let filteredUsers = usersData;
+
+  if (search) {
+    filteredUsers = usersData.filter(user => 
+      user.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  return NextResponse.json(filteredUsers);
 }
 
 export async function POST(request: Request) {
@@ -50,6 +60,13 @@ export async function DELETE(request: Request) {
 
     if (usersData.length === initialLength) {
         return NextResponse.json({ message: 'User not found' }, { status: 404 });
+    }
+    
+    // Also remove from original mock data if you want persistence across server restarts in dev
+    // This is a simplified approach. In a real app, you'd be talking to a database.
+    const indexInOriginal = users.findIndex(u => u.id === id);
+    if (indexInOriginal > -1) {
+        users.splice(indexInOriginal, 1);
     }
 
     return NextResponse.json({ message: 'User deleted successfully' }, { status: 200 });
