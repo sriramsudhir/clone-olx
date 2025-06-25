@@ -3,14 +3,7 @@ import Link from 'next/link';
 import { Home, Package, Users, PanelLeft } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import DynamicBreadcrumbs from './DynamicBreadcrumbs';
 
 function AdminSidebarNav() {
     return (
@@ -83,15 +76,7 @@ export default function AdminLayout({
                         <AdminSidebarNav />
                     </SheetContent>
                 </Sheet>
-                 <Breadcrumb className="hidden md:flex">
-                    <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink asChild>
-                        <Link href="/admin">Dashboard</Link>
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    </BreadcrumbList>
-                </Breadcrumb>
+                <DynamicBreadcrumbs />
             </header>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 bg-secondary/50">
                 {children}
