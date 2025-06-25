@@ -20,7 +20,7 @@ import CategoryChart from './CategoryChart';
 
 async function getStats() {
     // In a real app, you'd fetch this from your database
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/stats`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/stats`, { cache: 'no-store' });
     if (!res.ok) {
         throw new Error('Failed to fetch stats');
     }
@@ -39,6 +39,15 @@ export default async function AdminDashboard() {
     <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-4">
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+            <div className="text-2xl font-bold">{formatPrice(stats.totalRevenue)}</div>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Listings</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -55,19 +64,10 @@ export default async function AdminDashboard() {
             <div className="text-2xl font-bold">{stats.totalUsers}</div>
             </CardContent>
         </Card>
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-            <div className="text-2xl font-bold">{formatPrice(stats.totalRevenue)}</div>
-            </CardContent>
-        </Card>
-        <Card className="xl:col-span-2">
+        <Card className="xl:col-span-2 xl:row-start-2">
             <CategoryChart data={categoryChartData} />
         </Card>
-        <Card className="lg:col-span-2 xl:col-span-4">
+        <Card className="lg:col-span-2 xl:col-span-4 xl:row-start-1">
             <CardHeader>
             <CardTitle>Recent Listings</CardTitle>
             </CardHeader>

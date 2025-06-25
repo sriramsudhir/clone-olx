@@ -28,6 +28,28 @@ export default function UsersClient({ initialUsers }: { initialUsers: User[] }) 
   const [users, setUsers] = React.useState(initialUsers);
   const { toast } = useToast();
 
+  const handleAction = async (id: string, action: 'suspend' | 'activate') => {
+    try {
+      const res = await fetch(`/api/admin/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action }),
+      });
+      const updatedUser = await res.json();
+      if (!res.ok) {
+        throw new Error(`Failed to ${action} user`);
+      }
+      setUsers(users.map((u) => (u.id === id ? updatedUser : u)));
+      toast({ title: 'Success', description: `User ${action}ed successfully.` });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: (error as Error).message,
+      });
+    }
+  };
+
   const handleDelete = async (id: string) => {
     try {
       const res = await fetch(`/api/admin/users`, {
@@ -76,7 +98,9 @@ export default function UsersClient({ initialUsers }: { initialUsers: User[] }) 
             </TableCell>
             <TableCell>{user.phoneNumber || 'N/A'}</TableCell>
             <TableCell>
-              <Badge variant="outline">Active</Badge>
+              <Badge variant={user.status === 'active' ? 'outline' : 'secondary'}>
+                {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+              </Badge>
             </TableCell>
             <TableCell>
               <DropdownMenu>
@@ -88,7 +112,15 @@ export default function UsersClient({ initialUsers }: { initialUsers: User[] }) 
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem>Suspend</DropdownMenuItem>
+                  {user.status === 'active' ? (
+                    <DropdownMenuItem onClick={() => handleAction(user.id, 'suspend')}>
+                        Suspend
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem onClick={() => handleAction(user.id, 'activate')}>
+                        Activate
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     className="text-destructive"
                     onClick={() => handleDelete(user.id)}
