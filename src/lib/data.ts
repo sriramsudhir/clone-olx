@@ -1,3 +1,4 @@
+
 import type { User, Listing, Conversation, Category, Banner } from './types';
 import {
   MapPin,
@@ -25,9 +26,9 @@ import {
 
 
 export const users: User[] = [
-  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100.png', phoneNumber: '081234567890', showPhoneNumber: true, status: 'active' },
-  { id: 'user-2', name: 'Budi Santoso', avatarUrl: 'https://placehold.co/100x100.png', phoneNumber: '089876543210', showPhoneNumber: true, status: 'active' },
-  { id: 'user-3', name: 'Charlie', avatarUrl: 'https://placehold.co/100x100.png', status: 'suspended' },
+  { id: 'user-1', name: 'Ahmad Hudzaifah', avatarUrl: 'https://placehold.co/100x100.png', phoneNumber: '081234567890', showPhoneNumber: true },
+  { id: 'user-2', name: 'Budi Santoso', avatarUrl: 'https://placehold.co/100x100.png', phoneNumber: '089876543210', showPhoneNumber: true },
+  { id: 'user-3', name: 'Charlie', avatarUrl: 'https://placehold.co/100x100.png' },
 ];
 
 export const listings: Listing[] = [

@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import type { SubCategory, Listing } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { createListing, updateListing } from "./actions";
 
 const listingFormSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -50,6 +51,7 @@ export default function CreateListingForm({ initialData }: { initialData?: Listi
   const { toast } = useToast();
   const router = useRouter();
   const [imagePreviews, setImagePreviews] = useState<string[]>(initialData?.images || []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [subCategories, setSubCategories] = useState<SubCategory[]>(() => {
     if (initialData?.category) {
@@ -127,18 +129,37 @@ export default function CreateListingForm({ initialData }: { initialData?: Listi
     setImagePreviews(previews => previews.filter((_, index) => index !== indexToRemove));
   };
   
-  function onSubmit(data: ListingFormValues) {
-    console.log({ ...data, images: imagePreviews });
-    toast({
-      title: initialData ? "Listing Updated!" : "Listing Submitted!",
-      description: initialData ? "Your changes are now live." : "Your item is now live.",
-    });
-    if (initialData) {
-      router.push(`/listings/${initialData.id}`);
-    } else {
+  async function onSubmit(data: ListingFormValues) {
+    setIsSubmitting(true);
+    const payload = { ...data, images: imagePreviews };
+
+    try {
+      if (initialData) {
+        await updateListing(initialData.id, payload);
+        toast({
+          title: "Listing Updated!",
+          description: "Your changes are now live.",
+        });
+        router.push(`/listings/${initialData.id}`);
+      } else {
+        await createListing(payload);
+        toast({
+          title: "Listing Submitted!",
+          description: "Your item is now live.",
+        });
         form.reset();
         setImagePreviews([]);
         router.push('/profile');
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: "Could not save your listing. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -344,8 +365,8 @@ export default function CreateListingForm({ initialData }: { initialData?: Listi
           />
         </div>
 
-        <Button type="submit" size="lg" className="w-full md:w-auto">
-          {initialData ? 'Save Changes' : 'Post Listing'}
+        <Button type="submit" size="lg" className="w-full md:w-auto" disabled={isSubmitting}>
+           {isSubmitting ? (initialData ? 'Saving...' : 'Posting...') : (initialData ? 'Save Changes' : 'Post Listing')}
         </Button>
       </form>
     </Form>

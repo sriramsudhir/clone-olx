@@ -1,3 +1,4 @@
+
 import type { ComponentType } from "react";
 
 export type User = {
@@ -6,7 +7,6 @@ export type User = {
   avatarUrl: string;
   phoneNumber?: string;
   showPhoneNumber?: boolean;
-  status: 'active' | 'suspended';
 };
 
 export type Listing = {

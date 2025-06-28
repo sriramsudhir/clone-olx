@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -51,7 +52,7 @@ export default function ProfilePage({ searchParams }: { searchParams: { tab: str
                         {myListings.map((listing) => (
                             <div key={listing.id} className="relative group/edit">
                                 <ListingCard listing={listing} />
-                                <Button asChild size="icon" className="absolute top-12 right-2 h-8 w-8 z-20 transition-opacity bg-background hover:bg-secondary rounded-full shadow-md">
+                                <Button asChild size="icon" className="absolute top-12 right-2 h-8 w-8 z-20 opacity-0 transition-opacity group-hover/edit:opacity-100 bg-background hover:bg-secondary rounded-full shadow-md">
                                     <Link href={`/listings/${listing.id}/edit`}>
                                         <Pencil className="h-4 w-4 text-foreground" />
                                     </Link>
