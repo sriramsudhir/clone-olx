@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, Fire, Clock } from 'lucide-react';
+import { TrendingUp, Siren as Fire, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { listings } from '@/lib/data';
