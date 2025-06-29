@@ -6,9 +6,9 @@ import {
   VStack,
   Text,
   Progress,
-  keyframes,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { keyframes } from '@emotion/react';
 import { motion } from 'framer-motion';
 
 const MotionBox = motion(Box);
