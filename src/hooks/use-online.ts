@@ -6,6 +6,8 @@ export function useOnline() {
   const [isOnline, setIsOnline] = useState(true);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     setIsOnline(navigator.onLine);
 
     const handleOnline = () => setIsOnline(true);

@@ -15,7 +15,9 @@ export default function VoiceSearch({ onResult }: VoiceSearchProps) {
   const { toast } = useToast();
 
   useEffect(() => {
-    setIsSupported('webkitSpeechRecognition' in window || 'SpeechRecognition' in window);
+    if (typeof window !== 'undefined') {
+      setIsSupported('webkitSpeechRecognition' in window || 'SpeechRecognition' in window);
+    }
   }, []);
 
   const startListening = () => {
@@ -28,7 +30,11 @@ export default function VoiceSearch({ onResult }: VoiceSearchProps) {
       return;
     }
 
+    if (typeof window === 'undefined') return;
+
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
     const recognition = new SpeechRecognition();
 
     recognition.continuous = false;

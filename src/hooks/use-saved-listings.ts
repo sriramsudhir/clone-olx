@@ -11,6 +11,8 @@ export function useSavedListings() {
   const { toast } = useToast();
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     try {
       const item = window.localStorage.getItem(SAVED_LISTINGS_KEY);
       if (item) {
@@ -24,6 +26,8 @@ export function useSavedListings() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     if (isInitialized) {
         try {
             window.localStorage.setItem(SAVED_LISTINGS_KEY, JSON.stringify(Array.from(savedIds)));

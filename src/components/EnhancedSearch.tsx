@@ -20,6 +20,8 @@ export default function EnhancedSearch() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const saved = localStorage.getItem('recentSearches');
     if (saved) {
       setRecentSearches(JSON.parse(saved));
@@ -42,6 +44,8 @@ export default function EnhancedSearch() {
   }, [query]);
 
   const handleSearch = (searchQuery: string) => {
+    if (typeof window === 'undefined') return;
+
     if (searchQuery.trim()) {
       const updated = [searchQuery, ...recentSearches.filter(s => s !== searchQuery)].slice(0, 5);
       setRecentSearches(updated);

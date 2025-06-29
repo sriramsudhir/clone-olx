@@ -7,14 +7,16 @@ export function useNotifications() {
   const [isSupported, setIsSupported] = useState(false);
 
   useEffect(() => {
-    setIsSupported('Notification' in window);
-    if ('Notification' in window) {
-      setPermission(Notification.permission);
+    if (typeof window !== 'undefined') {
+      setIsSupported('Notification' in window);
+      if ('Notification' in window) {
+        setPermission(Notification.permission);
+      }
     }
   }, []);
 
   const requestPermission = async () => {
-    if (!isSupported) return false;
+    if (!isSupported || typeof window === 'undefined') return false;
 
     const result = await Notification.requestPermission();
     setPermission(result);
@@ -22,7 +24,7 @@ export function useNotifications() {
   };
 
   const showNotification = (title: string, options?: NotificationOptions) => {
-    if (permission !== 'granted') return;
+    if (permission !== 'granted' || typeof window === 'undefined') return;
 
     const notification = new Notification(title, {
       icon: '/icon-192x192.png',
@@ -34,7 +36,7 @@ export function useNotifications() {
   };
 
   const subscribeToNotifications = async () => {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
       return null;
     }
 
