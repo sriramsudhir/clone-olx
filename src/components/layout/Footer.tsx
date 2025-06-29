@@ -42,10 +42,10 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">About</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Careers</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Press & News</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Careers</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Press & News</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
 
@@ -53,9 +53,10 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Support</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Help Center</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Help Center</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link href="/policies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Community Guidelines</Link></li>
             </ul>
           </div>
         </div>

@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Checkbox } from "../ui/checkbox";
 import { useState, useEffect } from 'react';
+import PriceRangeSlider from '../PriceRangeSlider';
 
 type FilterState = {
   sort: string;
@@ -23,6 +24,7 @@ type FilterState = {
   maxPrice: string;
   condition: string[];
   location: string;
+  priceRange: [number, number];
 }
 
 export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean }) {
@@ -37,6 +39,7 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
     maxPrice: '',
     condition: [],
     location: '',
+    priceRange: [0, 100000000],
   });
 
   useEffect(() => {
@@ -48,6 +51,10 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
         maxPrice: searchParams.get('maxPrice') || '',
         condition: searchParams.getAll('condition') || [],
         location: searchParams.get('location') || '',
+        priceRange: [
+          parseInt(searchParams.get('minPrice') || '0'),
+          parseInt(searchParams.get('maxPrice') || '100000000')
+        ],
     };
     
     // special handling for category change via main nav
@@ -59,7 +66,7 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
     setFilters(newFilters);
   }, [searchParams]);
 
-  const handleValueChange = (key: keyof FilterState, value: string | string[]) => {
+  const handleValueChange = (key: keyof FilterState, value: string | string[] | [number, number]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
@@ -75,14 +82,23 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
     })
   }
 
+  const handlePriceRangeChange = (range: [number, number]) => {
+    setFilters(prev => ({
+      ...prev,
+      priceRange: range,
+      minPrice: range[0].toString(),
+      maxPrice: range[1].toString()
+    }));
+  };
+
   const handleApplyFilters = () => {
     const params = new URLSearchParams();
     
     // Set non-empty filters
     if (filters.sort && filters.sort !== 'newest') params.set('sort', filters.sort);
     if (filters.category && filters.category !== 'all') params.set('category', filters.category);
-    if (filters.minPrice) params.set('minPrice', filters.minPrice);
-    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
+    if (filters.minPrice && filters.minPrice !== '0') params.set('minPrice', filters.minPrice);
+    if (filters.maxPrice && filters.maxPrice !== '100000000') params.set('maxPrice', filters.maxPrice);
     if (filters.location) params.set('location', filters.location);
 
     // Handle condition array
@@ -100,6 +116,18 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
     // Preserve category and subCategory from the base URL if they exist
     if (searchParams.get('category')) params.set('category', searchParams.get('category')!);
     if (searchParams.get('subCategory')) params.set('subCategory', searchParams.get('subCategory')!);
+    
+    // Reset local state
+    setFilters({
+      sort: 'newest',
+      category: searchParams.get('category') || 'all',
+      minPrice: '',
+      maxPrice: '',
+      condition: [],
+      location: '',
+      priceRange: [0, 100000000],
+    });
+    
     router.push(`${pathname}?${params.toString()}`);
   }
 
@@ -115,6 +143,8 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
                     <SelectItem value="newest">Sort by: Newest</SelectItem>
                     <SelectItem value="price-asc">Price: Low to High</SelectItem>
                     <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                    <SelectItem value="popular">Most Popular</SelectItem>
+                    <SelectItem value="rating">Highest Rated</SelectItem>
                 </SelectContent>
             </Select>
         </div>
@@ -127,7 +157,7 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
                 </SelectTrigger>
                 <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {categories.map((cat) => (
+                {categories.filter(c => c.slug !== 'nearby').map((cat) => (
                     <SelectItem key={cat.slug} value={cat.slug}>
                     {cat.name}
                     </SelectItem>
@@ -136,17 +166,20 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
             </Select>
         </div>
 
-        <Accordion type="multiple" defaultValue={['price', 'condition']} className="w-full">
+        <Accordion type="multiple" defaultValue={['price', 'condition', 'location']} className="w-full">
             <AccordionItem value="price">
-                <AccordionTrigger>Price</AccordionTrigger>
+                <AccordionTrigger>Price Range</AccordionTrigger>
                 <AccordionContent>
-                    <div className="flex items-center gap-2">
-                        <Input type="number" placeholder="Min" aria-label="Minimum Price" className="bg-background" value={filters.minPrice} onChange={(e) => handleValueChange('minPrice', e.target.value)} />
-                        <span>-</span>
-                        <Input type="number" placeholder="Max" aria-label="Maximum Price" className="bg-background" value={filters.maxPrice} onChange={(e) => handleValueChange('maxPrice', e.target.value)} />
-                    </div>
+                    <PriceRangeSlider
+                      value={filters.priceRange}
+                      onValueChange={handlePriceRangeChange}
+                      min={0}
+                      max={100000000}
+                      step={100000}
+                    />
                 </AccordionContent>
             </AccordionItem>
+            
              <AccordionItem value="condition">
                 <AccordionTrigger>Condition</AccordionTrigger>
                 <AccordionContent>
@@ -162,6 +195,7 @@ export default function FilterSortBar({ isMobile = false }: { isMobile?: boolean
                     </div>
                 </AccordionContent>
             </AccordionItem>
+            
             <AccordionItem value="location">
                 <AccordionTrigger>Location</AccordionTrigger>
                 <AccordionContent>

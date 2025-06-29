@@ -14,6 +14,7 @@ import {
   CreditCard,
   Bell,
   Database,
+  UserCog,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -45,6 +46,11 @@ export const navigationItems: NavigationItem[] = [
     title: 'Categories',
     href: '/categories',
     icon: Tag,
+  },
+  {
+    title: 'Staff',
+    href: '/staff',
+    icon: UserCog,
   },
   {
     title: 'Reports',

@@ -1,4 +1,3 @@
-
 import type { ComponentType } from "react";
 
 export type User = {
@@ -17,7 +16,7 @@ export type Listing = {
   priceTo?: number;
   category: string;
   subCategory?: string;
-  location:string;
+  location: string;
   lat?: number;
   lng?: number;
   images: string[];
@@ -51,10 +50,34 @@ export type SubCategory = {
 };
 
 export type Category = {
-    name: string;
-    slug: string;
-    icon?: ComponentType<{ className?: string }>;
-    subCategories?: SubCategory[];
+  name: string;
+  slug: string;
+  icon?: ComponentType<{ className?: string }>;
+  subCategories?: SubCategory[];
 };
 
 export type Banner = string;
+
+export type Policy = {
+  title: string;
+  lastUpdated: string;
+  content: string;
+};
+
+export type StaffRole = {
+  id: string;
+  name: string;
+  permissions: string[];
+  description: string;
+};
+
+export type StaffMember = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar: string;
+  status: 'active' | 'inactive';
+  lastLogin: string;
+  createdAt: string;
+};
