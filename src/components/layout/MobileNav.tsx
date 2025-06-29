@@ -17,7 +17,7 @@ export default function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t h-16 flex items-center justify-around z-50">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t h-16 flex items-center justify-around z-50 safe-area-pb">
       {navLinks.map((link) => {
         // Special check for Explore to be active on both / and /listings
         const isActive = link.name === 'Explore' 
@@ -26,9 +26,9 @@ export default function MobileNav() {
 
         if (link.isCentral) {
           return (
-            <Link href={link.href} key={link.name} className="-mt-8" aria-label={link.name}>
-              <div className="flex items-center justify-center w-16 h-16 bg-primary rounded-full text-primary-foreground shadow-lg hover:bg-primary/90 transform transition-transform hover:scale-105">
-                <link.icon className="h-8 w-8" />
+            <Link href={link.href} key={link.name} className="-mt-6" aria-label={link.name}>
+              <div className="flex items-center justify-center w-14 h-14 bg-primary rounded-full text-primary-foreground shadow-lg hover:bg-primary/90 transform transition-all hover:scale-105 active:scale-95">
+                <link.icon className="h-7 w-7" />
               </div>
             </Link>
           );
@@ -39,13 +39,13 @@ export default function MobileNav() {
             key={link.name}
             href={link.href}
             className={cn(
-              "flex flex-col items-center justify-center text-muted-foreground hover:text-primary transition-colors w-1/5 pt-1",
+              "flex flex-col items-center justify-center text-muted-foreground hover:text-primary transition-colors w-1/5 pt-1 pb-2 px-1",
               isActive && "text-primary font-semibold"
             )}
             aria-current={isActive ? "page" : undefined}
           >
-            <link.icon className="h-6 w-6" />
-            <span className="text-[10px] mt-1">{link.name}</span>
+            <link.icon className="h-5 w-5 mb-1" />
+            <span className="text-[10px] leading-tight text-center">{link.name}</span>
           </Link>
         );
       })}

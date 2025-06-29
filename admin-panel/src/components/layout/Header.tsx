@@ -18,21 +18,21 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Header() {
   return (
-    <header className="h-16 border-b border-border bg-card px-6 flex items-center justify-between">
-      <div className="flex items-center space-x-4 flex-1">
+    <header className="h-14 md:h-16 border-b border-border bg-card px-3 md:px-6 flex items-center justify-between">
+      <div className="flex items-center space-x-2 md:space-x-4 flex-1">
         <div className="relative max-w-md w-full">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search users, listings, or content..."
-            className="pl-10 bg-background"
+            className="pl-10 bg-background h-9 md:h-10 text-sm"
           />
         </div>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
+      <div className="flex items-center space-x-2 md:space-x-4">
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 md:h-10 md:w-10">
+          <Bell className="h-4 w-4 md:h-5 md:w-5" />
+          <Badge className="absolute -top-1 -right-1 h-4 w-4 md:h-5 md:w-5 flex items-center justify-center p-0 text-xs">
             3
           </Badge>
         </Button>
@@ -41,8 +41,8 @@ export default function Header() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-              <Avatar className="h-10 w-10">
+            <Button variant="ghost" className="relative h-9 w-9 md:h-10 md:w-10 rounded-full">
+              <Avatar className="h-9 w-9 md:h-10 md:w-10">
                 <AvatarImage src="https://placehold.co/40x40.png" alt="Admin" />
                 <AvatarFallback>AD</AvatarFallback>
               </Avatar>

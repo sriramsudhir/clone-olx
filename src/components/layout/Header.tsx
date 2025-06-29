@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PlusCircle, MessageSquare, Heart, User, LogOut, Settings, MapPin, ChevronDown } from "lucide-react";
+import { PlusCircle, MessageSquare, Heart, User, LogOut, Settings, MapPin, ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { users } from "@/lib/data";
 import { ThemeToggle } from "../ThemeToggle";
 import GlobalSearch from "../GlobalSearch";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { useState } from "react";
 
 const navLinks = [
   { href: "/saved", label: "Saved", icon: Heart },
@@ -19,35 +21,107 @@ const navLinks = [
 export default function Header() {
   const pathname = usePathname();
   const currentUser = users[0];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-card shadow-sm sticky top-0 z-40 hidden md:block">
+    <header className="bg-card shadow-sm sticky top-0 z-40 border-b">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-6">
-            <Link href="/" className="text-2xl font-bold font-headline text-primary">
-              TradeZone
-            </Link>
-            
-            <div className="border-l pl-6">
-                <Link href="/location" className="flex items-center gap-2 text-sm group">
-                    <MapPin className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        <div className="flex items-center justify-between h-14 md:h-16">
+          {/* Mobile Menu Button */}
+          <div className="flex items-center md:hidden">
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="mr-2">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center space-x-3 pb-6 border-b">
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} />
+                      <AvatarFallback>{currentUser.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
                     <div>
-                        <p className="text-xs text-muted-foreground">Location</p>
-                        <div className="flex items-center">
-                            <span className="font-semibold">Banten, Tangerang</span>
-                            <ChevronDown className="w-4 h-4 ml-1 text-muted-foreground" />
-                        </div>
+                      <p className="font-semibold">{currentUser.name}</p>
+                      <p className="text-sm text-muted-foreground">user@example.com</p>
                     </div>
-                </Link>
-            </div>
+                  </div>
+                  
+                  <nav className="flex-1 py-6">
+                    <div className="space-y-2">
+                      {navLinks.map(({ href, label, icon: Icon }) => (
+                        <Link
+                          key={href}
+                          href={href}
+                          className={cn(
+                            "flex items-center space-x-3 px-3 py-3 rounded-lg transition-colors",
+                            pathname.startsWith(href) 
+                              ? "bg-primary/10 text-primary" 
+                              : "text-muted-foreground hover:text-primary hover:bg-accent"
+                          )}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <Icon className="h-5 w-5" />
+                          <span className="font-medium">{label}</span>
+                        </Link>
+                      ))}
+                      <Link
+                        href="/profile"
+                        className="flex items-center space-x-3 px-3 py-3 rounded-lg text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <User className="h-5 w-5" />
+                        <span className="font-medium">Profile</span>
+                      </Link>
+                      <Link
+                        href="/profile?tab=settings"
+                        className="flex items-center space-x-3 px-3 py-3 rounded-lg text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <Settings className="h-5 w-5" />
+                        <span className="font-medium">Settings</span>
+                      </Link>
+                    </div>
+                  </nav>
+                  
+                  <div className="border-t pt-4">
+                    <div className="flex items-center justify-between px-3 py-2">
+                      <span className="text-sm font-medium">Theme</span>
+                      <ThemeToggle />
+                    </div>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
 
-          <div className="flex-1 flex justify-center px-4 lg:px-12">
-            <GlobalSearch className="w-full max-w-lg" />
+          {/* Logo */}
+          <Link href="/" className="text-xl md:text-2xl font-bold font-headline text-primary">
+            TradeZone
+          </Link>
+
+          {/* Desktop Location */}
+          <div className="hidden lg:block border-l pl-6">
+            <Link href="/location" className="flex items-center gap-2 text-sm group">
+              <MapPin className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              <div>
+                <p className="text-xs text-muted-foreground">Location</p>
+                <div className="flex items-center">
+                  <span className="font-semibold text-sm">Banten, Tangerang</span>
+                  <ChevronDown className="w-3 h-3 ml-1 text-muted-foreground" />
+                </div>
+              </div>
+            </Link>
           </div>
 
-          <div className="flex items-center space-x-2">
+          {/* Desktop Search */}
+          <div className="hidden md:flex flex-1 justify-center px-4 lg:px-8 max-w-2xl">
+            <GlobalSearch className="w-full" />
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-2">
             <nav className="flex items-center space-x-1">
               {navLinks.map(({ href, label, icon: Icon }) => (
                 <Button
@@ -66,10 +140,12 @@ export default function Header() {
                 </Button>
               ))}
             </nav>
-            <div className="h-8 border-l"></div>
-             <Button asChild>
+            
+            <div className="h-6 border-l mx-2"></div>
+            
+            <Button asChild size="sm" className="hidden lg:flex">
               <Link href="/create">
-                <PlusCircle className="mr-2 h-5 w-5" />
+                <PlusCircle className="mr-2 h-4 w-4" />
                 Post Listing
               </Link>
             </Button>
@@ -116,8 +192,21 @@ export default function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
           </div>
+
+          {/* Mobile Post Button */}
+          <div className="md:hidden">
+            <Button asChild size="sm">
+              <Link href="/create">
+                <PlusCircle className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Search Bar */}
+        <div className="md:hidden pb-3">
+          <GlobalSearch className="w-full" />
         </div>
       </div>
     </header>

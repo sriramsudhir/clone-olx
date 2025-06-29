@@ -77,20 +77,20 @@ function ListingsContent() {
     : pageTitle;
 
   return (
-    <div className="space-y-6">
-       <header className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6 pb-20 md:pb-6">
+       <header className="flex items-center justify-between px-1 md:px-0">
           <div>
-            <h1 className="text-2xl font-bold font-headline capitalize">
+            <h1 className="text-xl md:text-2xl font-bold font-headline capitalize">
               {displayTitle.replace(/-/g, ' ')}
             </h1>
-            <p className="text-sm text-muted-foreground">{filteredListings.length} results found</p>
+            <p className="text-xs md:text-sm text-muted-foreground">{filteredListings.length} results found</p>
           </div>
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="gap-2 rounded-lg">
-                  <SlidersHorizontal className="w-4 h-4" />
-                  Filter
+                <Button variant="outline" className="gap-2 rounded-lg h-8 px-3">
+                  <SlidersHorizontal className="w-3 h-3" />
+                  <span className="text-xs">Filter</span>
                 </Button>
               </SheetTrigger>
               <SheetContent>
@@ -106,11 +106,11 @@ function ListingsContent() {
         </header>
 
       {subCategories.length > 0 && categorySlug !== 'all' && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-headline">Sub-categories in {pageTitle}</CardTitle>
+        <Card className="mx-1 md:mx-0">
+          <CardHeader className="pb-3 md:pb-6">
+            <CardTitle className="text-lg md:text-xl font-headline">Sub-categories in {pageTitle}</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <SubCategoryNav
               subCategories={subCategories}
               currentCategorySlug={categorySlug}
@@ -120,17 +120,17 @@ function ListingsContent() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <aside className="hidden md:block md:col-span-1">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-8">
+        <aside className="hidden lg:block lg:col-span-1">
             <div className="sticky top-24">
-                <h2 className="text-xl font-bold font-headline mb-4">Filters</h2>
+                <h2 className="text-lg md:text-xl font-bold font-headline mb-4">Filters</h2>
                 <FilterSortBar />
             </div>
         </aside>
 
-        <main className="md:col-span-3 space-y-6">
+        <main className="lg:col-span-3 space-y-4 md:space-y-6 px-1 md:px-0">
           {categorySlug !== 'all' && (
-            <div className="rounded-lg overflow-hidden aspect-[3/1] relative">
+            <div className="rounded-lg md:rounded-xl overflow-hidden aspect-[3/1] md:aspect-[4/1] relative">
               <Image src={`https://placehold.co/1000x300.png`} alt={`${pageTitle} banner`} fill className="object-cover bg-muted" />
             </div>
           )}
@@ -138,9 +138,9 @@ function ListingsContent() {
           <ListingGrid listings={filteredListings} />
 
           {filteredListings.length === 0 && (
-            <div className="text-center py-20 bg-card rounded-lg">
-              <h2 className="text-2xl font-semibold">No results found</h2>
-              <p className="mt-2 text-muted-foreground">Try adjusting your filters or checking a different category.</p>
+            <div className="text-center py-12 md:py-20 bg-card rounded-lg">
+              <h2 className="text-lg md:text-2xl font-semibold">No results found</h2>
+              <p className="mt-2 text-sm md:text-base text-muted-foreground">Try adjusting your filters or checking a different category.</p>
             </div>
           )}
         </main>

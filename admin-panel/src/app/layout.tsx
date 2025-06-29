@@ -1,19 +1,22 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { Inter, Poppins } from 'next/font/google';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import 'leaflet/dist/leaflet.css';
+
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-});
+import { Toaster } from "@/components/ui/toaster";
+import { Poppins, Inter } from 'next/font/google';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
 const APP_NAME = "TradeZone Admin";
@@ -32,7 +35,7 @@ export const viewport: Viewport = {
   themeColor: "#7C3AED",
 };
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -40,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={`${inter.variable} ${poppins.variable} font-sans antialiased bg-secondary/50`}>
+      <body className={`${poppins.variable} ${inter.variable} font-sans antialiased bg-secondary/50`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -48,16 +51,26 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="flex h-screen bg-background">
-            <Sidebar />
+            {/* Mobile Sidebar */}
+            <div className="lg:hidden">
+              <Sidebar />
+            </div>
+            
+            {/* Desktop Sidebar */}
+            <div className="hidden lg:block">
+              <Sidebar />
+            </div>
+            
             <div className="flex-1 flex flex-col overflow-hidden">
               <Header />
               <main className="flex-1 overflow-auto">
-                <div className="container mx-auto px-6 py-6">
+                <div className="container mx-auto px-3 md:px-6 py-3 md:py-6">
                   {children}
                 </div>
               </main>
             </div>
           </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
