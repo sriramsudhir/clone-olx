@@ -1,4 +1,6 @@
+"use client";
 
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { SlidersHorizontal } from 'lucide-react';
 import ListingGrid from '@/components/listings/ListingGrid';
@@ -8,30 +10,19 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/co
 import Image from 'next/image';
 import SubCategoryNav from '@/components/listings/SubCategoryNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Suspense } from 'react';
 
-type ListingsPageProps = {
-  searchParams: {
-    category?: string;
-    subCategory?: string;
-    sort?: string;
-    minPrice?: string;
-    maxPrice?: string;
-    condition?: string | string[];
-    location?: string;
-  };
-};
-
-export default function ListingsPage({ searchParams }: ListingsPageProps) {
-  // Filter params from props
-  const categorySlug = searchParams.category || 'all';
-  const subCategorySlug = searchParams.subCategory || 'all';
-  const sort = searchParams.sort || 'newest';
-  const minPrice = searchParams.minPrice;
-  const maxPrice = searchParams.maxPrice;
-  const conditions = Array.isArray(searchParams.condition)
-    ? searchParams.condition
-    : (searchParams.condition ? [searchParams.condition] : []);
-  const locationQuery = searchParams.location?.toLowerCase();
+function ListingsContent() {
+  const searchParams = useSearchParams();
+  
+  // Filter params from URL
+  const categorySlug = searchParams.get('category') || 'all';
+  const subCategorySlug = searchParams.get('subCategory') || 'all';
+  const sort = searchParams.get('sort') || 'newest';
+  const minPrice = searchParams.get('minPrice');
+  const maxPrice = searchParams.get('maxPrice');
+  const conditions = searchParams.getAll('condition');
+  const locationQuery = searchParams.get('location')?.toLowerCase();
 
   let results = [...listings];
 
@@ -140,7 +131,7 @@ export default function ListingsPage({ searchParams }: ListingsPageProps) {
         <main className="md:col-span-3 space-y-6">
           {categorySlug !== 'all' && (
             <div className="rounded-lg overflow-hidden aspect-[3/1] relative">
-              <Image src={`https://placehold.co/1000x300.png`} alt={`${pageTitle} banner`} layout="fill" objectFit='cover' className="bg-muted" data-ai-hint="marketplace banner"/>
+              <Image src={`https://placehold.co/1000x300.png`} alt={`${pageTitle} banner`} fill className="object-cover bg-muted" />
             </div>
           )}
           
@@ -155,5 +146,18 @@ export default function ListingsPage({ searchParams }: ListingsPageProps) {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function ListingsPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-6">
+        <div className="h-8 bg-muted animate-pulse rounded" />
+        <div className="h-64 bg-muted animate-pulse rounded" />
+      </div>
+    }>
+      <ListingsContent />
+    </Suspense>
   );
 }

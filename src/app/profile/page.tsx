@@ -1,4 +1,6 @@
+"use client";
 
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,12 +11,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ListingCard from "@/components/listings/ListingCard";
 import ListingGrid from "@/components/listings/ListingGrid";
 import ProfileSettings from "./ProfileSettings";
+import { Suspense } from 'react';
 
-export default function ProfilePage({ searchParams }: { searchParams: { tab: string } }) {
+function ProfileContent() {
+  const searchParams = useSearchParams();
   const currentUser = users[0];
   const myListings = listings.filter(l => l.seller.id === currentUser.id);
   const savedListings = listings.slice(0, 4); // Placeholder
-  const activeTab = searchParams.tab || 'listings';
+  const activeTab = searchParams.get('tab') || 'listings';
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -24,7 +28,7 @@ export default function ProfilePage({ searchParams }: { searchParams: { tab: str
           <div className="px-4 md:px-6 pb-4 -mt-16 sm:-mt-20">
             <div className="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-4">
               <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-background">
-                  <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint="person face" />
+                  <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} />
                   <AvatarFallback>{currentUser.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="flex-grow">
@@ -38,7 +42,7 @@ export default function ProfilePage({ searchParams }: { searchParams: { tab: str
           </div>
         </CardHeader>
         <CardContent className="px-2 sm:px-6">
-          <Tabs defaultValue={activeTab} className="w-full">
+          <Tabs value={activeTab} className="w-full">
             <div className="border-b">
               <TabsList className="bg-transparent p-0 -mb-px">
                 <TabsTrigger value="listings" className="bg-transparent text-muted-foreground data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 border-primary rounded-none py-3">My Listing Ads</TabsTrigger>
@@ -81,5 +85,17 @@ export default function ProfilePage({ searchParams }: { searchParams: { tab: str
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-6xl mx-auto">
+        <div className="h-64 bg-muted animate-pulse rounded-lg" />
+      </div>
+    }>
+      <ProfileContent />
+    </Suspense>
   );
 }

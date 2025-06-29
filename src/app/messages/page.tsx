@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import { useSearchParams } from 'next/navigation';
 import ConversationList from '@/components/messaging/ConversationList';
@@ -7,8 +6,9 @@ import MessageView from '@/components/messaging/MessageView';
 import { conversations } from '@/lib/data';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MessageCircle } from 'lucide-react';
+import { Suspense } from 'react';
 
-export default function MessagesPage() {
+function MessagesContent() {
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
   const conversationId = searchParams.get('conversationId');
@@ -41,5 +41,17 @@ export default function MessagesPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-[calc(100vh-10rem)] bg-card border rounded-lg overflow-hidden">
+        <div className="w-full bg-muted animate-pulse" />
+      </div>
+    }>
+      <MessagesContent />
+    </Suspense>
   );
 }
