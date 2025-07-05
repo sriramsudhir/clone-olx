@@ -1,78 +1,22 @@
-import type { Metadata, Viewport } from 'next';
-import './globals.css';
-import 'leaflet/dist/leaflet.css';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
 
-import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/Header';
-import { Toaster } from "@/components/ui/toaster";
-import { Poppins, Inter } from 'next/font/google';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-});
-
-const APP_NAME = "TradeZone Admin";
-const APP_DESCRIPTION = "Admin panel for TradeZone marketplace management.";
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  applicationName: APP_NAME,
-  title: {
-    default: APP_NAME,
-    template: `%s | ${APP_NAME}`,
-  },
-  description: APP_DESCRIPTION,
-};
+  title: 'Admin Panel',
+  description: 'Administration panel for managing the application',
+}
 
-export const viewport: Viewport = {
-  themeColor: "#7C3AED",
-};
-
-export default function AdminLayout({
+export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
-      <body className={`${poppins.variable} ${inter.variable} font-sans antialiased bg-secondary/50`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex h-screen bg-background">
-            {/* Mobile Sidebar */}
-            <div className="lg:hidden">
-              <Sidebar />
-            </div>
-            
-            {/* Desktop Sidebar */}
-            <div className="hidden lg:block">
-              <Sidebar />
-            </div>
-            
-            <div className="flex-1 flex flex-col overflow-hidden">
-              <Header />
-              <main className="flex-1 overflow-auto">
-                <div className="container mx-auto px-3 md:px-6 py-3 md:py-6">
-                  {children}
-                </div>
-              </main>
-            </div>
-          </div>
-          <Toaster />
-        </ThemeProvider>
-      </body>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
     </html>
-  );
+  )
 }
